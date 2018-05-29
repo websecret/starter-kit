@@ -24,7 +24,7 @@
 
 login: *info@alfavet.by*
 
-password: *ineTfs!@#d*
+password: *******
 
 ## Команды
 

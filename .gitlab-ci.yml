@@ -1,0 +1,14 @@
+deploy_to_stage:
+    stage: deploy
+    script:
+        - "cd /home/deploy/htdocs/$CI_PROJECT_NAME"
+        - "git checkout master"
+        - "php artisan down"
+        - "git pull"
+        - "composer install"
+        - "php artisan migrate --force"
+        - "yarn"
+        - "yarn run prod"
+        - "php artisan up"
+    only:
+         - "master"

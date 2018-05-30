@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('admin.home.index');
-})->name('home.index');
+Route::get('/', 'HomeController@index')->name('home.index');
+
+Route::group(['prefix' => 'users', 'as' => 'users.'], function ($route) {
+    admin_routes($route, 'User');
+});

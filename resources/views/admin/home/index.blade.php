@@ -1,6 +1,9 @@
-@extends('admin.layouts.main')
+@extends('admin.layouts.main', ['breadcrumbs' => false])
 
 @section('content')
-    <h1>Главная</h1>
-    <h2>Route: {{ request()->route()->getName() }}</h2>
+    <div class="page-header">
+        <h1 class="page-title">
+            Панель управления
+        </h1>
+    </div>
 @endsection

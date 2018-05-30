@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Hash;
 
 class User extends Authenticatable
 {
@@ -29,6 +30,16 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
-        if ($value) $this->attributes['password'] = bcrypt($value);
+        if ($value) $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function getFullNameAttribute()
+    {
+        $data = [];
+        $fields = ['last_name', 'first_name', 'middle_name'];
+        foreach ($fields as $field) {
+            $data[] = $this->$field;
+        }
+        return implode(' ', array_filter($data));
     }
 }

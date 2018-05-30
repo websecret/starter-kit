@@ -17,5 +17,6 @@ return [
 	'content_short' => 'Краткое описание',
 	'is_disabled' => 'Отключен',
     'status' => 'Статус',
+    'name' => 'Имя',
 
 ];

@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 require('./tabler');
-require('./app');
+require('./app/index');
 
 $(document).ready(function() {
 

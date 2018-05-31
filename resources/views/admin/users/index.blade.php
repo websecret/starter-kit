@@ -6,9 +6,9 @@
             <thead>
             <tr>
                 <th class="text-center w-1">#</th>
-                <th>Имя</th>
-                <th>Email</th>
-                <th>Зарегистрирован</th>
+                <th>{{ __("labels.full_name") }}</th>
+                <th>{{ __("labels.email") }}</th>
+                <th>{{ __("labels.register_at") }}</th>
                 <th class="text-center"></th>
             </tr>
             </thead>
@@ -20,7 +20,7 @@
                     </td>
                     <td>
                         <div>
-                            <a href="{{ route('admin.users.edit', $user) }}">
+                            <a href="{{ route('admin.users.edit', $user) }}" class="pjax">
                                 {{ $user->full_name }}
                             </a>
                         </div>
@@ -33,18 +33,13 @@
                         <div>{{ Date::instance($user->created_at)->diffForHumans() }}</div>
                     </td>
                     <td class="text-center">
-                        <div class="item-action dropdown">
-                            <a href="#" data-toggle="dropdown" class="icon">
-                                <i class="fe fe-more-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                @include('admin.partials.entity.actions.dropdown-edit', [
-                                    'link' => route('admin.users.edit', $user)
-                                ])
-                                @include('admin.partials.entity.actions.dropdown-delete', [
-                                    'link' => route('admin.users.delete', $user)
-                                ])
-                            </div>
+                        <div class="item-action text-right">
+                            @include('admin.partials.entity.actions.dropdown-edit', [
+                                'link' => route('admin.users.edit', $user)
+                            ])
+                            @include('admin.partials.entity.actions.dropdown-delete', [
+                                'link' => route('admin.users.delete', $user)
+                            ])
                         </div>
                     </td>
                 </tr>
@@ -52,7 +47,7 @@
             </tbody>
         </table>
     </div>
-    @if($users->total() > 1)
+    @if(!$users->lastPage())
         <div class="card-footer">
             <nav>
                 {{ $users->links() }}

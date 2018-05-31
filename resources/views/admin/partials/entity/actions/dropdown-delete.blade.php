@@ -1,3 +1,3 @@
-<a href="{{ $link }}" class="dropdown-item js-confirm-delete">
-    <i class="dropdown-icon fe fe-trash"></i> Удалить
+<a href="{{ $link }}" class="js-confirm-delete">
+    <i class="fe fe-trash text-danger"></i>
 </a>

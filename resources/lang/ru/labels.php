@@ -18,5 +18,6 @@ return [
 	'is_disabled' => 'Отключен',
     'status' => 'Статус',
     'name' => 'Имя',
+    'register_at' => 'Зарегистрирован',
 
 ];

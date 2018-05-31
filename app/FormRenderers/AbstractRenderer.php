@@ -8,6 +8,7 @@ abstract class AbstractRenderer
 {
     protected $form;
 
+    protected $renderNotFoundFields = true;
     protected $notFoundTabName = 'Основное';
 
     public function __construct(Form $form, $options = [])
@@ -25,7 +26,9 @@ abstract class AbstractRenderer
     {
         $data = $this->build();
 
-        $data = $this->addNotFoundFieldsToData($data);
+        if($this->renderNotFoundFields) {
+            $data = $this->addNotFoundFieldsToData($data);
+        }
 
         $tabs = $this->getTabs($data);
 

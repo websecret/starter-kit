@@ -11,7 +11,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    {!! form_rest($form) !!}
+                    {!! (new \App\FormRenderers\UserRenderer($form))->render() !!}
                 </div>
                 <div class="card-footer text-right">
                     <button type="submit" class="btn btn-primary">

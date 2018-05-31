@@ -16,9 +16,10 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => 'auth'], function ($route) {
-    Route::get('/', 'HomeController@index')->name('home.index');
 
-    Route::group(['prefix' => 'users', 'as' => 'users.'], function ($route) {
-        admin_routes($route, 'User');
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+        Route::admin('User');
     });
+
 });
+

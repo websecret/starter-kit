@@ -52,14 +52,14 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/index.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/index.php'));
 
         Route::middleware('web')
-             ->namespace($this->namespace . '\Admin')
-             ->prefix('admin')
-             ->as('admin.')
-             ->group(base_path('routes/admin.php'));
+            ->namespace($this->namespace . '\Admin')
+            ->prefix('admin')
+            ->as('admin.')
+            ->group(base_path('routes/admin.php'));
     }
 
     /**
@@ -72,8 +72,25 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
+    }
+
+    public function register()
+    {
+        Route::macro('admin', function ($controllerName, $modelName = null) {
+            if (is_null($modelName)) {
+                $modelName = camel_case($controllerName);
+            }
+            Route::get('/', $controllerName . 'Controller@index')->name('index');
+            Route::get('add', $controllerName . 'Controller@form')->name('add');
+            Route::post('store/{' . $modelName . '?}', $controllerName . 'Controller@store')->name('store');
+            Route::group(['prefix' => '{' . $modelName . '}'], function ($route) use ($controllerName) {
+                $route->get('edit', $controllerName . 'Controller@form')->name('edit');
+                $route->get('delete', $controllerName . 'Controller@delete')->name('delete');
+                $route->post('fast', $controllerName . 'Controller@fast')->name('fast');
+            });
+        });
     }
 }

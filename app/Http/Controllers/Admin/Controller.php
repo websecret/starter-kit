@@ -10,8 +10,6 @@ abstract class Controller extends BaseController
 {
     abstract protected function getModel();
 
-    abstract protected function save(Request $request, $model);
-
     public function index(Request $request)
     {
         $data = $this->getIndexViewData($request);
@@ -37,6 +35,12 @@ abstract class Controller extends BaseController
         return $this->actionsAfterSave($request, $model);
     }
 
+    protected function save(Request $request, $model)
+    {
+        $model->fill($request->all())->save();
+        return $model;
+    }
+
     public function delete(Request $request, $model)
     {
         $model = $this->getModelInstance($model);
@@ -47,7 +51,15 @@ abstract class Controller extends BaseController
     protected function actionsAfterSave(Request $request, $model)
     {
         $redirect = redirect($this->redirectToAfterSave($model));
-        if($message = $this->getSaveMessage()) {
+        $message = $this->getSaveSuccessMessage();
+        if ($request->ajax()) {
+            return array_merge([
+                'result' => 'success'
+            ], $message ? [
+                'message' => $message,
+            ] : []);
+        }
+        if ($message) {
             $redirect->with('message-success', $message);
         }
         return $redirect;
@@ -61,7 +73,7 @@ abstract class Controller extends BaseController
     protected function actionsAfterDelete(Request $request)
     {
         $redirect = redirect($this->redirectToAfterDelete());
-        if($message = $this->getDeleteMessage()) {
+        if ($message = $this->getDeleteSuccessMessage()) {
             $redirect->with('message-success', $message);
         }
         return $redirect;
@@ -72,13 +84,14 @@ abstract class Controller extends BaseController
         return \URL::previous();
     }
 
-    protected function getSaveMessage()
+    protected function getSaveSuccessMessage()
     {
-        return 'Данные успешно сохранены';
+        return __('messages.save.success');
     }
-    protected function getDeleteMessage()
+
+    protected function getDeleteSuccessMessage()
     {
-        return 'Данные успешно удалены';
+        return __('messages.delete.success');
     }
 
     protected function getModelInstance($model)

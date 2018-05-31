@@ -1,0 +1,1 @@
+window.bootbox = require('bootbox');

@@ -19,7 +19,11 @@
                         <div class="small text-muted">{{ $user->id }}</div>
                     </td>
                     <td>
-                        <div>{{ $user->full_name }}</div>
+                        <div>
+                            <a href="{{ route('admin.users.edit', $user) }}">
+                                {{ $user->full_name }}
+                            </a>
+                        </div>
                     </td>
                     <td>
                         <div>{{ $user->email }}</div>
@@ -34,12 +38,12 @@
                                 <i class="fe fe-more-vertical"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a href="{{ route('admin.users.edit', $user) }}" class="dropdown-item">
-                                    <i class="dropdown-icon fe fe-edit-2"></i> Редактировать
-                                </a>
-                                <a href="{{ route('admin.users.delete', $user) }}" class="dropdown-item">
-                                    <i class="dropdown-icon fe fe-trash"></i> Удалить
-                                </a>
+                                @include('admin.partials.entity.actions.dropdown-edit', [
+                                    'link' => route('admin.users.edit', $user)
+                                ])
+                                @include('admin.partials.entity.actions.dropdown-delete', [
+                                    'link' => route('admin.users.delete', $user)
+                                ])
                             </div>
                         </div>
                     </td>

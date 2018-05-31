@@ -1,0 +1,22 @@
+@import "~toastr/toastr";
+
+#toast-container > div {
+  box-shadow: none;
+  opacity: 0.9;
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+.toast-success {
+  background-color: $green;
+}
+.toast-error {
+  background-color: $red;
+}
+.toast-info {
+  background-color: $azure;
+}
+.toast-warning {
+  background-color: $yellow;
+}

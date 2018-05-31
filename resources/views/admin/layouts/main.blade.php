@@ -11,6 +11,7 @@
                 @endif
             </div>
             <div class="container">
+                @include('admin.layouts.partials.alerts.success')
                 @yield('content')
             </div>
         </div>

@@ -1,5 +1,7 @@
 @extends('admin.layouts.single')
 
+@push('title', __('sections.login.title'))
+
 @section('content')
     <div class="row">
         <div class="col col-login mx-auto">
@@ -12,24 +14,24 @@
             </div>
             {!! Form::open(['action' => 'Admin\Auth\LoginController@login', 'class' => 'card']) !!}
                 <div class="card-body p-6">
-                    <div class="card-title">Авторизация</div>
+                    <div class="card-title">{{ __('sections.login.title') }}</div>
                     <div class="form-group">
-                        {!! Form::label('email', 'Email', ['class' => 'form-label']) !!}
+                        {!! Form::label('email', __('labels.email'), ['class' => 'form-label']) !!}
                         {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Email']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('password', 'Пароль', ['class' => 'form-label']) !!}
+                        {!! Form::label('password', __('labels.password'), ['class' => 'form-label']) !!}
                         {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Пароль']) !!}
                     </div>
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">
                             {!! Form::checkbox('remember', 1, null, ['class' => 'custom-control-input']) !!}
-                            <span class="custom-control-label">Запомнить</span>
+                            <span class="custom-control-label">{{ __('theme.remember') }}</span>
                         </label>
                     </div>
 
                     <div class="form-footer">
-                        <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                        <button type="submit" class="btn btn-primary btn-block">{{ __('theme.login') }}</button>
                     </div>
                     @if ($errors->count() > 0)
                         <div class="alert alert-danger mt-6">

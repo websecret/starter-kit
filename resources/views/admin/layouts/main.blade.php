@@ -1,7 +1,7 @@
 @extends('admin.root')
 
 @section('layout')
-    @php($fluid = isset($fluid) ? $fluid : false)
+    @php($fluid = isset($fluid) ? $fluid : config('admin.fluid'))
     <div class="page-main">
         @include('admin.layouts.partials.header', ['fluid' => $fluid])
         @include('admin.layouts.partials.header-nav', ['fluid' => $fluid])

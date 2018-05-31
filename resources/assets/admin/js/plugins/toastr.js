@@ -1,0 +1,1 @@
+window.toastr = require('toastr');

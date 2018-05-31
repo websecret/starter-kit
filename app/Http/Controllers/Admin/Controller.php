@@ -46,7 +46,11 @@ abstract class Controller extends BaseController
 
     protected function actionsAfterSave(Request $request, $model)
     {
-        return redirect($this->redirectToAfterSave($model));
+        $redirect = redirect($this->redirectToAfterSave($model));
+        if($message = $this->getSaveMessage()) {
+            $redirect->with('message-success', $message);
+        }
+        return $redirect;
     }
 
     protected function redirectToAfterSave($model)
@@ -56,12 +60,25 @@ abstract class Controller extends BaseController
 
     protected function actionsAfterDelete(Request $request)
     {
-        return redirect($this->redirectToAfterDelete());
+        $redirect = redirect($this->redirectToAfterDelete());
+        if($message = $this->getDeleteMessage()) {
+            $redirect->with('message-success', $message);
+        }
+        return $redirect;
     }
 
     protected function redirectToAfterDelete()
     {
         return \URL::previous();
+    }
+
+    protected function getSaveMessage()
+    {
+        return 'Данные успешно сохранены';
+    }
+    protected function getDeleteMessage()
+    {
+        return 'Данные успешно удалены';
     }
 
     protected function getModelInstance($model)

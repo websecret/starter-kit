@@ -3,6 +3,7 @@
 return [
     'title' => env('APP_NAME', env('ADMIN_TITLE')),
     'logo' => 'images/websecret/logo-dark.svg',
+    'fluid' => false,
     'menu' => [
         [
             'route' => 'admin.home.index',

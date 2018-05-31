@@ -1,3 +1,16 @@
 @import "~tabler-ui/src/assets/scss/variables";
 @import "~bootstrap/scss/bootstrap";
 @import "~tabler-ui/src/assets/scss/dashboard/dashboard";
+
+@import "plugins";
+
+.modal {
+  .close {
+    font-size: 0;
+    color: #FFF;
+    &:before {
+      font-size: 1rem;
+      color: #000;
+    }
+  }
+}

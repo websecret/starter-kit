@@ -11,6 +11,7 @@ $(document).ready(function() {
 
         const DIV_CARD = 'div.card';
 
+        $('.tooltip').remove()
         $('[data-toggle="tooltip"]').tooltip();
 
         $('[data-toggle="popover"]').popover({

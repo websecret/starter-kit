@@ -1,8 +1,13 @@
-$(document).on('click', '.js-confirm-delete', function(e) {
+$(document).on('click', '.js-confirm-delete', function (e) {
     e.preventDefault();
-    let $link = $(this).attr('href');
+    let $link = $(this);
+    let message = $(this).data('question') || 'Вы действительно хотите удалить?';
+    let textSuccess = $(this).data('success') || 'Удаление прошло успешно';
+    let textError = $(this).data('error') || 'Ошибка';
+    let wrap = $(this).data('wrap') || 'tr'
+    let url = $(this).attr('href')
     bootbox.confirm({
-        message: "Вы действительно хотитите удалить?",
+        message: message,
         backdrop: true,
         buttons: {
             cancel: {
@@ -14,23 +19,21 @@ $(document).on('click', '.js-confirm-delete', function(e) {
             }
         },
         callback: function (result) {
-            if(result) {
-                window.location.href = $link;
+            if (result) {
+                axios
+                    .get(url)
+                    .then(data => {
+                        if (data.data.result == 'success') {
+                            $link.closest(wrap).remove();
+                            if (data.data.message) {
+                                textSuccess = data.data.message
+                            }
+                            toastr.success(textSuccess);
+                        } else {
+                            toastr.error(textError);
+                        }
+                    })
             }
         }
     });
 });
-
-let PJAX_CONTAINER = '#pjax-container'
-
-$(document).pjax('.pjax', PJAX_CONTAINER, {fragment: '#pjax-container', timeout: 5000});
-
-$(PJAX_CONTAINER).on('pjax:beforeSend', () => {
-    $('.wrapper-spinner').show();
-})
-
-$(PJAX_CONTAINER).on('pjax:complete', () => {
-    $('.wrapper-spinner').hide();
-    // init();
-
-})

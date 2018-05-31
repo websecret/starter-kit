@@ -12,11 +12,12 @@
                 @if(auth()->user())
                     <div class="dropdown">
                         <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+                            <i class="fe fe-user text-muted"></i>
                             {{--<span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>--}}
                             <span class="ml-2 d-none d-lg-block">
-                                        <span class="text-default">{{ auth()->user()->fullName }}</span>
-                                        <small class="text-muted d-block mt-1">Administrator</small>
-                                    </span>
+                                <span class="text-default">{{ auth()->user()->fullName }}</span>
+                                <small class="text-muted d-block mt-1">Administrator</small>
+                            </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                             <a class="dropdown-item" href="#todo">

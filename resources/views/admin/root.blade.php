@@ -14,7 +14,7 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
-    <title>@stack('title'){{ config('admin.title') }}</title>
+    <title>@stack('title') | {{ config('admin.title') }}</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

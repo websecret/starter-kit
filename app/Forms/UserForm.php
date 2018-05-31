@@ -1,5 +1,6 @@
 <?php namespace App\Forms;
 
+use Illuminate\Validation\Rule;
 use Kris\LaravelFormBuilder\Form;
 
 class UserForm extends Form
@@ -17,7 +18,8 @@ class UserForm extends Form
             ->add('email', 'email', [
                 'rules' => [
                     'required',
-                    'email:unique,users,email,' . $this->getModel()->id
+                    'email',
+                    Rule::unique('users')->ignoreModel($this->getModel()),
                 ],
             ])
             ->add('password', 'custom-password', [

@@ -3,8 +3,8 @@
 return [
     'edit_button' => 'Редактировать',
     'delete_button' => 'Удалить',
-    'store_button' => 'Сохранить',
-    'back_button' => 'Вернуться Назад',
+    'save_button' => 'Сохранить',
+    'back_button' => 'Назад',
     'clear_button' => 'Очистить',
     'no_items' => 'Ничего не найдено по данному запросу',
     'go_to_site' => 'Перейти на сайт',

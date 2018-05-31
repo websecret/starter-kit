@@ -2,12 +2,12 @@
 
 return [
     'defaults'      => [
-        'wrapper_class'       => 'form-group',
+        'wrapper_class'       => 'form-group js-form__wrapper',
         'wrapper_error_class' => 'has-error',
-        'label_class'         => 'form-label',
-        'field_class'         => 'form-control',
+        'label_class'         => 'form-label js-form__input-label',
+        'field_class'         => 'form-control js-form__input',
         'help_block_class'    => 'help-block',
-        'error_class'         => 'text-danger',
+        'error_class'         => 'invalid-feedback',
         'required_class'      => 'required'
 
         // Override a class from a field.

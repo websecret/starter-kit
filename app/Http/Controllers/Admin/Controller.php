@@ -13,9 +13,9 @@ abstract class Controller extends BaseController
     public function index(Request $request)
     {
         $data = $this->getIndexViewData($request);
-        if ($request->ajax()) {
-            return $data;
-        }
+//        if ($request->ajax()) {
+//            return $data;
+//        }
         return view($this->getIndexViewPath(), $this->getIndexViewData($request));
     }
 
@@ -29,7 +29,9 @@ abstract class Controller extends BaseController
     {
         $model = $this->getModelInstance($model);
         if ($form = $this->getForm($request, $model)) {
-            $form->redirectIfNotValid();
+            if (! $form->isValid()) {
+                return ['result' => 'error', 'errors' => $form->getErrors()];
+            }
         }
         $model = $this->save($request, $model);
         return $this->actionsAfterSave($request, $model);
@@ -73,7 +75,15 @@ abstract class Controller extends BaseController
     protected function actionsAfterDelete(Request $request)
     {
         $redirect = redirect($this->redirectToAfterDelete());
-        if ($message = $this->getDeleteSuccessMessage()) {
+        $message = $this->getDeleteSuccessMessage();
+        if ($request->ajax()) {
+            return array_merge([
+                'result' => 'success'
+            ], $message ? [
+                'message' => $message,
+            ] : []);
+        }
+        if ($message) {
             $redirect->with('message-success', $message);
         }
         return $redirect;

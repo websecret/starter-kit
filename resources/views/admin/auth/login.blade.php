@@ -41,7 +41,7 @@
                 </div>
             {!! Form::close() !!}
             <div class="text-center text-muted">
-                Разработка - <a href="https://websecret.by">Веб Секрет</a>
+                @include('admin.layouts.partials.copyright')
             </div>
         </div>
     </div>

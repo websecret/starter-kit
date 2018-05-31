@@ -1,10 +1,11 @@
 @extends('admin.layouts.main')
 
+@push('title', __('sections.users.' . ($user->exists ? 'edit' : 'add')))
+
 @section('content')
     <div class="row">
         <div class="col-12">
-            <form action="{{ route('admin.users.store', $user) }}" method="post" class="card">
-                {{ csrf_field() }}
+            {!! Form::open(['route' => ['admin.users.store', $user], 'class' => 'card js-form js-form--back']) !!}
                 <div class="card-header">
                     <h3 class="card-title">
                         {{ __('sections.users.' . ($user->exists ? 'edit' : 'add')) }}
@@ -14,12 +15,16 @@
                     {!! (new \App\FormRenderers\UserRenderer($form))->render() !!}
                 </div>
                 <div class="card-footer text-right">
+                    <a href="{{ url()->previous() }}" class="pjax js-back btn btn-default">
+                        <i class="fe fe-chevron-left"></i>
+                        {{ __('theme.back_button') }}
+                    </a>
                     <button type="submit" class="btn btn-primary">
                         <i class="fe fe-save"></i>
-                        Сохранить
+                        {{ __('theme.save_button') }}
                     </button>
                 </div>
-            </div>
+            {!! Form::close() !!}
         </div>
     </div>
 @endsection

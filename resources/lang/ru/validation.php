@@ -38,7 +38,7 @@ return [
 	"not_in" => "Выбранное значение для :attribute не верно.",
 	"numeric" => "Поле :attribute должно быть числом.",
 	"regex" => "Поле :attribute имеет неверный формат.",
-	"required" => 'Поле ":attribute" обязательно для заполнения.',
+	"required" => 'Укажите :attribute',
 	'required_with' => 'Укажите :attribute',
 	"same" => "Значение :attribute должно совпадать со значенеим :other.",
 	"size" => [
@@ -52,6 +52,8 @@ return [
 	'attributes' => [
 		'title' => 'Заголовок',
 		'slug' => 'Ссылка',
+		'email' => 'Email',
+		'password' => 'Пароль',
 	],
 
 	'index' => [

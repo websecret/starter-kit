@@ -10,7 +10,7 @@ class UsersSeeder extends Seeder
         User::query()->delete();
 
         User::query()->create([
-            'first_name' => 'WEBsecret',
+            'first_name' => 'Веб Секрет',
 			'email' => 'info@websecret.by',
             'password' => config('websecret.password'),
         ]);

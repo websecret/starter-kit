@@ -13,6 +13,6 @@
 
 Route::get('/', 'HomeController@index')->name('home.index');
 
-Route::group(['prefix' => 'users', 'as' => 'users.'], function ($route) {
-    admin_routes($route, 'User');
+Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+    Route::admin('User');
 });

@@ -1,5 +1,5 @@
 <div class="header py-4">
-    <div class="container">
+    <div class="{{ $fluid ? 'container-fluid' : 'container' }}">
         <div class="d-flex">
             <a class="header-brand" href="{{ route('admin.home.index') }}">
                 @if(config('admin.logo'))

@@ -1,5 +1,5 @@
 <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
-    <div class="container">
+    <div class="{{ $fluid ? 'container-fluid' : 'container' }}">
         <div class="row align-items-center">
             <div class="col-lg-3 ml-auto">
             </div>

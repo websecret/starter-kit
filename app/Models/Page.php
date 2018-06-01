@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CustomAttributable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
     use Sluggable;
+    use CustomAttributable;
 
     protected $fillable = [
         'title', 'slug', 'content', 'meta_title', 'meta_description', 'is_disabled', 'order',
@@ -35,8 +37,7 @@ class Page extends Model
         $query
             ->when($title, function ($q) use ($title) {
                 return $q->where('title', 'like', "%$title%");
-            })
-        ;
+            });
 
         return $query;
     }

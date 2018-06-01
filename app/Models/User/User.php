@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Hash;
+use Ultraware\Roles\Traits\HasRoleAndPermission;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoleAndPermission;
 
     /**
      * The attributes that are mass assignable.
@@ -37,9 +39,16 @@ class User extends Authenticatable
     {
         $data = [];
         $fields = ['last_name', 'first_name', 'middle_name'];
+
         foreach ($fields as $field) {
             $data[] = $this->$field;
         }
+
         return implode(' ', array_filter($data));
+    }
+
+    public function getRoleAttribute()
+    {
+        return $this->getRoles()->first();
     }
 }

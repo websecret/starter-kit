@@ -15,6 +15,9 @@ return [
         'add_button' => 'Добавить пользователя',
         'edit' => 'Редактирование пользователя',
         'not_found' => 'Пользователи не найдены',
+        'roles' => array_combine(\App\Models\User\Role::ROLES, [
+            'Администратор',
+        ]),
     ],
 
     'pages' => [

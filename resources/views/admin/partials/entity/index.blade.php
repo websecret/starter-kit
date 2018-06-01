@@ -12,8 +12,9 @@
                             <h3 class="card-title">{{ __('sections.' . $section . '.title') }}</h3>
                         </div>
                         <div class="col text-right">
-                            <a class="btn btn-sm btn-success pjax" data-toggle="tooltip" title="{{ __('sections.' . $section . '.add_button') }}" href="{{ route('admin.' . $section .'.add') }}">
+                            <a class="btn btn-sm btn-success pjax" href="{{ route('admin.' . $section .'.add') }}">
                                 <i class="fe fe-plus"></i>
+                                {{ __('sections.' . $section . '.add_button') }}
                             </a>
                         </div>
                     </div>

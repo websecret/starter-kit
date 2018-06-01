@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+use App\Models\User\Role;
+use App\Models\User\User;
 use Illuminate\Database\Seeder;
 
 class UsersSeeder extends Seeder
@@ -13,7 +14,7 @@ class UsersSeeder extends Seeder
             'first_name' => 'Веб Секрет',
 			'email' => 'info@websecret.by',
             'password' => config('websecret.password'),
-        ]);
+        ])->roles()->sync(Role::whereSlug(Role::ROLE_ADMIN)->pluck('id'));
 
     }
 }

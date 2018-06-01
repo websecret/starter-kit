@@ -8,6 +8,7 @@
                 <th class="text-center w-1">#</th>
                 <th>{{ __("labels.full_name") }}</th>
                 <th>{{ __("labels.email") }}</th>
+                <th>{{ __("labels.role") }}</th>
                 <th>{{ __("labels.register_at") }}</th>
                 <th class="text-center"></th>
             </tr>
@@ -27,6 +28,9 @@
                     </td>
                     <td>
                         <div>{{ $user->email }}</div>
+                    </td>
+                    <td>
+                        <div>{{ $user->role->name ?? null }}</div>
                     </td>
                     <td>
                         <div class="small text-muted">{{ $user->created_at->format('d.m.Y H:i') }}</div>

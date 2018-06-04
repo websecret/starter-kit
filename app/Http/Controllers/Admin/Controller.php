@@ -150,9 +150,11 @@ abstract class Controller extends BaseController
         $data = [
             camel_case($this->getModelVariableName()) => $model,
         ];
+
         if ($form = $this->getForm($request, $model)) {
             $data['form'] = $this->getForm($request, $model);
         }
+
         return $data;
     }
 

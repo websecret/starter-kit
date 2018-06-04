@@ -13,7 +13,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        \Ultraware\Roles\Exceptions\RoleDeniedException::class,
     ];
 
     /**
@@ -46,6 +46,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof \Ultraware\Roles\Exceptions\RoleDeniedException) {
+            return redirect('admin/login');
+        }
+
         return parent::render($request, $exception);
     }
 }

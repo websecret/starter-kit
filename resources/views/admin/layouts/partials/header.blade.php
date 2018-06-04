@@ -1,7 +1,7 @@
 <div class="header py-4">
     <div class="{{ $fluid ? 'container-fluid' : 'container' }}">
         <div class="d-flex">
-            <a class="header-brand" href="{{ route('admin.home.index') }}">
+            <a class="header-brand pjax" href="{{ route('admin.home.index') }}">
                 @if(config('admin.logo'))
                     <img src="{{ asset(config('admin.logo')) }}" class="header-brand-img" alt="{{ config('admin.title') }}">
                 @else
@@ -12,11 +12,10 @@
                 @if(auth()->user())
                     <div class="dropdown">
                         <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                            <i class="fe fe-user text-muted"></i>
                             {{--<span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>--}}
                             <span class="ml-2 d-none d-lg-block">
                                 <span class="text-default">{{ auth()->user()->fullName }}</span>
-                                <small class="text-muted d-block mt-1">Administrator</small>
+                                <small class="text-muted d-block mt-1">{{ optional(auth()->user()->role)->name }}</small>
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">

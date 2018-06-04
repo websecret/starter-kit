@@ -26,7 +26,7 @@ abstract class AbstractRenderer
     {
         $data = $this->build();
 
-        if($this->renderNotFoundFields) {
+        if ($this->renderNotFoundFields) {
             $data = $this->addNotFoundFieldsToData($data);
         }
 

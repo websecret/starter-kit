@@ -5,14 +5,19 @@ $(document).on('submit', '.js-form', submitFormAjax);
 const CLASS_WRAP = 'js-form__wrapper'
 const CLASS_INPUT_ERROR = 'js-form__input-error'
 const CLASS_HAS_ERROR = 'is-invalid'
+const BTN_LOADING = 'btn-loading'
 
 function submitFormAjax(e) {
-    e.preventDefault();
-    let $form = $(this);
-    $form.find(`.${CLASS_WRAP}`).removeClass(CLASS_HAS_ERROR);
-    $form.find(`.${CLASS_INPUT_ERROR}`).html('');
+    e.preventDefault()
+    let $form = $(this)
+    $form.find(`.${CLASS_WRAP}`).removeClass(CLASS_HAS_ERROR)
+    $form.find(`.${CLASS_INPUT_ERROR}`).html('')
+    let $button = $form.find('button')
+    $button.addClass(BTN_LOADING).attr('disabled', true)
     $form.ajaxSubmit({
         success: function (data) {
+            $button.removeClass(BTN_LOADING).attr('disabled', false)
+
             if (data.result != 'success') {
                 handleFormAjaxError($form, data);
             } else {
@@ -32,6 +37,8 @@ function submitFormAjax(e) {
             }
         },
         error: function (result) {
+            $button.removeClass(BTN_LOADING).attr('disabled', false)
+
             if (result.status == 422) {
                 handleFormAjaxError($form, result.responseJSON);
             }

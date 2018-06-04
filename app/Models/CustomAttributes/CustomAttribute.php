@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\CustomAttributes;
 
 use Illuminate\Database\Eloquent\Model;
 

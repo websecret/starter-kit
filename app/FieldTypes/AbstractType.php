@@ -21,15 +21,4 @@ abstract class AbstractType
     {
         return $this->value;
     }
-
-    public function toInputValue()
-    {
-        return $this->value;
-    }
-
-    public function fromInputValue($value)
-    {
-        $this->value = $value;
-        return $this;
-    }
 }

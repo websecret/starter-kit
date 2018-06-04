@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Traits\CustomAttributable;
+use App\FieldTypes\TextType;
+use App\Models\CustomAttributes\CustomAttributesScheme;
+use App\Models\CustomAttributes\Traits\CustomAttributableTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
     use Sluggable;
-    use CustomAttributable;
+    use CustomAttributableTrait;
 
     protected $fillable = [
         'title', 'slug', 'content', 'meta_title', 'meta_description', 'is_disabled', 'order',
@@ -45,5 +47,11 @@ class Page extends Model
     public function scopeActive($q)
     {
         return $q->whereIsDisabled(0);
+    }
+
+    public function getCustomAttributesScheme()
+    {
+        return (new CustomAttributesScheme())
+            ->add('title', new TextType());
     }
 }

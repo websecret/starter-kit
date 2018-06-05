@@ -19,5 +19,12 @@ return [
             'text' => 'Пользователи',
             'exact' => false,
         ],
+        [
+            'route' => 'admin.pages.index',
+            'routeParams' => [],
+            'icon' => 'fe fe-align-justify',
+            'text' => 'Страницы',
+            'exact' => false,
+        ],
     ],
 ];

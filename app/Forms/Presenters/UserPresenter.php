@@ -1,8 +1,10 @@
 <?php
 
-namespace App\FormRenderers;
+namespace App\Forms\Presenters;
 
-class UserRenderer extends AbstractRenderer
+use App\FormPresenter\AbstractRenderer;
+
+class UserPresenter extends AbstractRenderer
 {
 
     protected $notFoundTabName = 'Основное';

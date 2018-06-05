@@ -13,7 +13,7 @@
 
 Route::get('login', 'Auth\LoginController@showLoginForm');
 Route::post('login', 'Auth\LoginController@login');
-Route::get('logout', 'Auth\LoginController@logout');
+Route::any('logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => 'role:admin'], function ($route) {
 
@@ -21,6 +21,10 @@ Route::group(['middleware' => 'role:admin'], function ($route) {
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::admin('User');
+    });
+
+    Route::group(['prefix' => 'pages', 'as' => 'pages.'], function () {
+        Route::admin('Page');
     });
 
 });

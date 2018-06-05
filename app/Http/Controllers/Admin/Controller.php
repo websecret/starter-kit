@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as BaseController;
+use App\Models\CustomAttributes\CustomAttributableInterface;
 use Illuminate\Http\Request;
 use FormBuilder;
 
@@ -29,7 +30,7 @@ abstract class Controller extends BaseController
     {
         $model = $this->getModelInstance($model);
         if ($form = $this->getForm($request, $model)) {
-            if (! $form->isValid()) {
+            if (!$form->isValid()) {
                 return ['result' => 'error', 'errors' => $form->getErrors()];
             }
         }
@@ -39,8 +40,17 @@ abstract class Controller extends BaseController
 
     protected function save(Request $request, $model)
     {
-        $model->fill($request->all())->save();
+        $data = $this->getDataFromSaveRequest($request);
+        $model->fill($data)->save();
+        if ($model instanceof CustomAttributableInterface) {
+            $model->saveCustomAttributes($request->input('custom_attributes'));
+        }
         return $model;
+    }
+
+    protected function getDataFromSaveRequest(Request $request)
+    {
+        return $request->all();
     }
 
     public function delete(Request $request, $model)
@@ -48,6 +58,13 @@ abstract class Controller extends BaseController
         $model = $this->getModelInstance($model);
         $model->delete();
         return $this->actionsAfterDelete($request);
+    }
+
+    public function fast(Request $request, $model)
+    {
+        $model = $this->getModelInstance($model);
+        $model->update([$request->input('name') => $request->input('value')]);
+        return $this->actionsAfterFast($request, $model);
     }
 
     protected function actionsAfterSave(Request $request, $model)
@@ -65,6 +82,16 @@ abstract class Controller extends BaseController
             $redirect->with('message-success', $message);
         }
         return $redirect;
+    }
+
+    protected function actionsAfterFast(Request $request, $model)
+    {
+        $message = $this->getFastSuccessMessage();
+        return array_merge([
+            'result' => 'success'
+        ], $message ? [
+            'message' => $message,
+        ] : []);
     }
 
     protected function redirectToAfterSave($model)
@@ -97,6 +124,11 @@ abstract class Controller extends BaseController
     protected function getSaveSuccessMessage()
     {
         return __('messages.save.success');
+    }
+
+    protected function getFastSuccessMessage()
+    {
+        return __('messages.fast.success');
     }
 
     protected function getDeleteSuccessMessage()

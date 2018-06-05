@@ -1,6 +1,6 @@
 <?php
 
-namespace App\FormRenderers;
+namespace App\FormPresenter;
 
 use Kris\LaravelFormBuilder\Form;
 

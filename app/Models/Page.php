@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
-use App\FieldTypes\TextType;
+use App\FieldTypes\TranslatableType;
 use App\Models\CustomAttributes\CustomAttributesScheme;
-use App\Models\CustomAttributes\Traits\CustomAttributableTrait;
+use App\Models\CustomAttributes\CustomAttributableInterface;
+use App\Models\CustomAttributes\CustomAttributableTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
-class Page extends Model
+class Page extends Model implements CustomAttributableInterface
 {
     use Sluggable;
     use CustomAttributableTrait;
 
     protected $fillable = [
-        'title', 'slug', 'content', 'meta_title', 'meta_description', 'is_disabled', 'order',
+        'slug',
+        'is_disabled',
+        'order',
     ];
 
     public function sluggable()
@@ -52,6 +55,9 @@ class Page extends Model
     public function getCustomAttributesScheme()
     {
         return (new CustomAttributesScheme())
-            ->add('title', new TextType());
+            ->add('title', new TranslatableType())
+            ->add('content', new TranslatableType())
+            ->add('meta_title', new TranslatableType())
+            ->add('meta_description', new TranslatableType());
     }
 }

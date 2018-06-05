@@ -16,3 +16,16 @@ Breadcrumbs::for('admin.users.edit', function ($trail, $model) {
     $trail->parent('admin.users.index');
     $trail->push(__('sections.users.edit'), route('admin.users.edit', $model));
 });
+
+Breadcrumbs::for('admin.pages.index', function ($trail) {
+    $trail->parent('admin.home.index');
+    $trail->push(__('sections.pages.title'), route('admin.pages.index'));
+});
+Breadcrumbs::for('admin.pages.add', function ($trail) {
+    $trail->parent('admin.pages.index');
+    $trail->push(__('sections.pages.add'), route('admin.pages.add'));
+});
+Breadcrumbs::for('admin.pages.edit', function ($trail, $model) {
+    $trail->parent('admin.pages.index');
+    $trail->push(__('sections.pages.edit'), route('admin.pages.edit', $model));
+});

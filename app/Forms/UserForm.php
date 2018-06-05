@@ -1,12 +1,18 @@
 <?php namespace App\Forms;
 
-use App\Models\User\Role;
+use App\Forms\Presenters\UserPresenter;
 use App\Services\SelectService;
 use Illuminate\Validation\Rule;
-use Kris\LaravelFormBuilder\Form;
 
-class UserForm extends Form
+class UserForm extends AbstractForm
 {
+    public function getPresenters()
+    {
+        return [
+            'admin' => UserPresenter::class,
+        ];
+    }
+
     public function buildForm()
     {
         $this

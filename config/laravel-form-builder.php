@@ -44,6 +44,11 @@ return [
     'default_namespace' => '',
 
     'custom_fields' => [
-        'custom-password' => App\Forms\Fields\CustomPasswordType::class
+        'custom-password' => App\Forms\Fields\CustomPasswordType::class,
+        'translatable-text' => App\Forms\Fields\TranslatableTextType::class,
+        'translatable-textarea' => App\Forms\Fields\TranslatableTextareaType::class,
+        'translatable-wysiwyg' => App\Forms\Fields\TranslatableWysiwygType::class,
+        'slug' => App\Forms\Fields\SlugType::class,
+        'boolean' => App\Forms\Fields\BooleanType::class,
     ]
 ];

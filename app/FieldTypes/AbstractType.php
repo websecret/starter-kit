@@ -19,6 +19,6 @@ abstract class AbstractType
 
     public function __toString()
     {
-        return $this->value;
+        return is_null($this->value) ? '' : (string) $this->value;
     }
 }

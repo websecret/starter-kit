@@ -2,19 +2,18 @@
 
 use Kris\LaravelFormBuilder\Fields\FormField;
 
-class CustomPasswordType extends FormField
+class BooleanType extends FormField
 {
 
     protected function getTemplate()
     {
-        return 'admin.partials.form.fields.password';
+        return 'admin.partials.form.fields.boolean';
     }
 
     public function render(array $options = [], $showLabel = true, $showField = true, $showError = true)
     {
         $options = $this->getOptions();
-        $options['value'] = null;
-        $options['attr']['class'] = config('laravel-form-builder.defaults.field_class') . ' js-input-password__field';
+        $options['attr']['class'] = 'js-form__input custom-control-input';
         return parent::render($options, $showLabel, $showField, $showError);
     }
 }

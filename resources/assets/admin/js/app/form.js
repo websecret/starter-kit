@@ -12,7 +12,7 @@ function submitFormAjax(e) {
     let $form = $(this)
     $form.find(`.${CLASS_WRAP}`).removeClass(CLASS_HAS_ERROR)
     $form.find(`.${CLASS_INPUT_ERROR}`).html('')
-    let $button = $form.find('button')
+    let $button = $form.find('button[type=submit]')
     $button.addClass(BTN_LOADING).attr('disabled', true)
     $form.ajaxSubmit({
         success: function (data) {

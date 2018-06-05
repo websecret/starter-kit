@@ -11,7 +11,7 @@ class UserPresenter extends AbstractPresenter
 
     public function build()
     {
-        return $this
+        $this
             ->addTab(function(Tab $tab) {
                 $tab->addRow(function(Row $row) {
                     $row

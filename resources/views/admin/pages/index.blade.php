@@ -24,8 +24,8 @@
                                 {{ $page->custom_attributes->title }}
                             </a>
                         </div>
-                        <div>
-                            <span class="text-muted">{{ $page->slug }}</span>
+                        <div class="small text-muted">
+                            {{ $page->slug }}
                         </div>
                     </td>
                     <td class="text-center">

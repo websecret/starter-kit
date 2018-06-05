@@ -9,9 +9,6 @@ use LaravelLocalization;
 
 class CustomAttributesScheme extends Fluent
 {
-
-    protected $attributes = [];
-
     /**
      * @param string $name
      * @param AbstractType $type
@@ -68,7 +65,7 @@ class CustomAttributesScheme extends Fluent
         switch (get_class($type)) {
             case TranslatableType::class:
                 $currentValue = $this->attributes[$attribute]->getValue();
-                if(is_null($currentValue)) {
+                if (is_null($currentValue)) {
                     $currentValue = [];
                 }
                 $value = array_merge($currentValue, $value);

@@ -32,10 +32,7 @@ abstract class AbstractPresenter
         return $this->form;
     }
 
-    public function build()
-    {
-        return $this;
-    }
+    abstract public function build();
 
     public function render()
     {

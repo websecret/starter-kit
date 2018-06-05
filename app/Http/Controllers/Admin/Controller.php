@@ -43,7 +43,7 @@ abstract class Controller extends BaseController
         $data = $this->getDataFromSaveRequest($request);
         $model->fill($data)->save();
         if ($model instanceof CustomAttributableInterface) {
-            $model->saveCustomAttributes($request->input('custom_attributes'));
+            $model->saveCustomAttributes(array_get($data, 'custom_attributes', []));
         }
         return $model;
     }

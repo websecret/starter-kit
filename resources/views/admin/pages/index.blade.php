@@ -20,7 +20,7 @@
                     </td>
                     <td>
                         <div>
-                            <a href="{{ route('admin.pages.edit', $page) }}" class="pjax">
+                            <a href="{{ route('admin.pages.edit', $page) }}">
                                 {{ $page->custom_attributes->title }}
                             </a>
                         </div>

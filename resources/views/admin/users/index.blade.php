@@ -21,7 +21,7 @@
                     </td>
                     <td>
                         <div>
-                            <a href="{{ route('admin.users.edit', $user) }}" class="pjax">
+                            <a href="{{ route('admin.users.edit', $user) }}">
                                 {{ $user->full_name }}
                             </a>
                         </div>

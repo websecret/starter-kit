@@ -1,7 +1,7 @@
 <div class="header py-4">
     <div class="{{ $fluid ? 'container-fluid' : 'container' }}">
         <div class="d-flex">
-            <a class="header-brand pjax" href="{{ route('admin.home.index') }}">
+            <a class="header-brand" href="{{ route('admin.home.index') }}">
                 @if(config('admin.logo'))
                     <img src="{{ asset(config('admin.logo')) }}" class="header-brand-img" alt="{{ config('admin.title') }}">
                 @else

@@ -2,32 +2,23 @@
 
 namespace App\Forms\Presenters;
 
-use App\FormPresenter\AbstractRenderer;
+use App\FormPresenter\AbstractPresenter;
+use App\FormPresenter\Row;
+use App\FormPresenter\Tab;
 
-class UserPresenter extends AbstractRenderer
+class UserPresenter extends AbstractPresenter
 {
-
-    protected $notFoundTabName = 'Основное';
 
     public function build()
     {
-        return [
-            [
-                'title' => 'Основное',
-                'rows' => [
-                    [
-                        'first_name' => [
-                            'size' => 4,
-                        ],
-                        'last_name' => [
-                            'size' => 4,
-                        ],
-                        'middle_name' => [
-                            'size' => 4,
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        return $this
+            ->addTab(function(Tab $tab) {
+                $tab->addRow(function(Row $row) {
+                    $row
+                        ->addField('first_name', ['size' => 4])
+                        ->addField('last_name', ['size' => 4])
+                        ->addField('middle_name', ['size' => 4]);
+                });
+            }, 'Основное');
     }
 }

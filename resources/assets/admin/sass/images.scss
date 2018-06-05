@@ -1,0 +1,28 @@
+.js-image--clone {
+  display: none;
+}
+
+.imagecheck {
+  &-remove {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 3px;
+    padding: 2px;
+    font-size: 12px;
+    color: #FFF;
+    text-decoration: none;
+    background-color: $blue;
+    &:hover {
+      text-decoration: none;
+      color: #FFF;
+      background-color: darken($blue, 15%);
+    }
+  }
+  &:hover {
+    .imagecheck-remove {
+      display: block;
+    }
+  }
+}

@@ -11,22 +11,26 @@ class PagePresenter extends AbstractPresenter
 
     public function build()
     {
-        $this
-            ->addTab(function (Tab $tab) {
-                $tab->addRow(function (Row $row) {
-                    $row
-                        ->addField('is_disabled', ['size' => 3]);
-                });
-                $tab->addRow(function (Row $row) {
-                    $row
-                        ->addField('custom_attributes[title]', ['size' => 6])
-                        ->addField('slug', ['size' => 6]);
-                });
-                $tab->addRow(function (Row $row) {
-                    $row
-                        ->addField('custom_attributes[content]');
-                });
-            }, 'Основное');
+        $this->addTab(function (Tab $tab) {
+            $tab->addRow(function (Row $row) {
+                $row->addField('images[main]');
+            });
+        }, 'Изображения');
+        $this->addTab(function (Tab $tab) {
+            $tab->addRow(function (Row $row) {
+                $row
+                    ->addField('is_disabled', ['size' => 3]);
+            });
+            $tab->addRow(function (Row $row) {
+                $row
+                    ->addField('custom_attributes[title]', ['size' => 6])
+                    ->addField('slug', ['size' => 6]);
+            });
+            $tab->addRow(function (Row $row) {
+                $row
+                    ->addField('custom_attributes[content]');
+            });
+        }, 'Основное');
         $this->addTab(function (Tab $tab) {
             $tab->addRow(function (Row $row) {
                 $row

@@ -6,6 +6,7 @@ use App\FieldTypes\TranslatableType;
 use App\Models\CustomAttributes\CustomAttributesScheme;
 use App\Models\CustomAttributes\CustomAttributableInterface;
 use App\Models\CustomAttributes\CustomAttributableTrait;
+use App\Models\Image\ImageableTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,7 @@ class Page extends Model implements CustomAttributableInterface
 {
     use Sluggable;
     use CustomAttributableTrait;
+    use ImageableTrait;
 
     protected $fillable = [
         'slug',
@@ -59,5 +61,20 @@ class Page extends Model implements CustomAttributableInterface
             ->add('content', new TranslatableType())
             ->add('meta_title', new TranslatableType())
             ->add('meta_description', new TranslatableType());
+    }
+
+    public function getImagesConfig()
+    {
+        return [
+            'main' => [
+                'cell' => [
+                    'width' => 582,
+                    'height' => 366,
+                    'quality' => 90,
+                    'crop' => true,
+                    'upsize' => true,
+                ],
+            ],
+        ];
     }
 }

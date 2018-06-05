@@ -6,7 +6,7 @@
             <thead>
             <tr>
                 <th class="text-center w-1">#</th>
-                <th>{{ __("labels.title") }}</th>
+                <th colspan="2">{{ __("labels.title") }}</th>
                 <th class="text-center">{{ __("labels.is_disabled") }}</th>
                 <th>{{ __("labels.created_at") }}</th>
                 <th class="text-center"></th>
@@ -17,6 +17,9 @@
                 <tr class="js-fast__wrapper" data-fast-link="{{ route('admin.pages.fast', $page) }}">
                     <td class="text-center">
                         <div class="small text-muted">{{ $page->id }}</div>
+                    </td>
+                    <td class="w-1">
+                        <span class="avatar" style="background-image: url({{ $page->admin_main_image_urls['main']['admin-table'] }})"></span>
                     </td>
                     <td>
                         <div>

@@ -47,6 +47,12 @@ class PageForm extends AbstractForm
             ])
             ->add('custom_attributes[meta_description]', 'translatable-textarea', [
                 'label' => __('labels.meta_description'),
+            ])
+            ->add('images[main]', 'images', [
+                'label' => false,
+                'images' => [
+                    'type' => 'main',
+                ],
             ]);
     }
 }

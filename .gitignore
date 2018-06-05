@@ -17,3 +17,7 @@ yarn-error.log
 /public/assets
 /public/fonts
 /public/images
+/public/uploads/images/
+/images.php
+/images.js
+/public/uploads/temp/

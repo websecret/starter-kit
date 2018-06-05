@@ -7,6 +7,7 @@ deploy_to_stage:
         - "git pull"
         - "composer install"
         - "php artisan migrate --force"
+        - "php artisan images:config"
         - "yarn"
         - "yarn run prod"
         - "php artisan up"

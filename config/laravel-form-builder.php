@@ -50,5 +50,6 @@ return [
         'translatable-wysiwyg' => App\Forms\Fields\TranslatableWysiwygType::class,
         'slug' => App\Forms\Fields\SlugType::class,
         'boolean' => App\Forms\Fields\BooleanType::class,
+        'images' => App\Forms\Fields\ImagesType::class,
     ]
 ];

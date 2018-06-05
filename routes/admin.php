@@ -19,6 +19,10 @@ Route::group(['middleware' => 'role:admin'], function ($route) {
 
     Route::get('/', 'HomeController@index')->name('home.index');
 
+    Route::group(['prefix' => 'upload', 'as' => 'upload.'], function () {
+        Route::post('images', 'UploadController@images')->name('images');
+    });
+
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::admin('User');
     });

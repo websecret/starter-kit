@@ -18,4 +18,11 @@ class PageController extends Controller
         $data['order'] = Page::query()->count() ? (Page::query()->max('order') + 1) : 0;
         return $data;
     }
+
+    public function save(Request $request, $model)
+    {
+        $model = parent::save($request, $model);
+        $model->syncImages($request->input('images', []));
+        return $model;
+    }
 }

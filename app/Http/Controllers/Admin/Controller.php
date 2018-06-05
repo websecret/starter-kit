@@ -174,13 +174,14 @@ abstract class Controller extends BaseController
 
     protected function getFormViewPath()
     {
-        return $this->getViewsPath() . '.form';
+        return 'admin.partials.entity.form';
     }
 
     protected function getFormViewData(Request $request, $model)
     {
         $data = [
-            camel_case($this->getModelVariableName()) => $model,
+            'entity' => $model,
+            'entitiesName' => str_plural(kebab_case($this->getModelVariableName())),
         ];
 
         if ($form = $this->getForm($request, $model)) {

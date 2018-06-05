@@ -1,14 +1,14 @@
 @extends('admin.layouts.main')
 
-@push('title', __('sections.users.' . ($user->exists ? 'edit' : 'add')))
+@push('title', __('sections.' . $entitiesName . '.' . ($form->getModel()->exists ? 'edit' : 'add')))
 
 @section('content')
     <div class="row">
         <div class="col-12">
-            {!! Form::open(['route' => ['admin.users.store', $user], 'class' => 'card js-form js-form--back']) !!}
+            {!! Form::open(['route' => ['admin.' . $entitiesName .  '.store', $form->getModel()], 'class' => 'card js-form js-form--slug js-form--back']) !!}
                 <div class="card-header">
                     <h3 class="card-title">
-                        {{ __('sections.users.' . ($user->exists ? 'edit' : 'add')) }}
+                        {{ __('sections.' . $entitiesName . '.' . ($form->getModel()->exists ? 'edit' : 'add')) }}
                     </h3>
                 </div>
                 <div class="card-body">

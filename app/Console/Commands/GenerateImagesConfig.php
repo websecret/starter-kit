@@ -20,14 +20,14 @@ class GenerateImagesConfig extends Command
         $sizes = [];
         $path = app_path(config('images.models_path'));
         $folder = public_path(config('images.folder'));
-        foreach(File::allFiles($path) as $file) {
+        foreach (File::allFiles($path) as $file) {
             $classname = str_replace('/', '\\', substr('App' . str_replace(app_path(), '', $file->getPathName()), 0, -4));
             $traits = class_uses($classname);
-            if(isset($traits[ImageableTrait::class])) {
+            if (isset($traits[ImageableTrait::class])) {
                 $class = new $classname;
                 $imageSizes = $class->getImagesSizes();
-                if(!empty($imageSizes)) {
-                    $imageModelPath =  $class->getImagesUploadPath();
+                if (!empty($imageSizes)) {
+                    $imageModelPath = $class->getImagesUploadPath();
                     $sizes[$imageModelPath] = $imageSizes;
                 }
             }

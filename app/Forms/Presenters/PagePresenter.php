@@ -13,11 +13,6 @@ class PagePresenter extends AbstractPresenter
     {
         $this->addTab(function (Tab $tab) {
             $tab->addRow(function (Row $row) {
-                $row->addField('images[main]');
-            });
-        }, 'Изображения');
-        $this->addTab(function (Tab $tab) {
-            $tab->addRow(function (Row $row) {
                 $row
                     ->addField('is_disabled', ['size' => 3]);
             });
@@ -41,5 +36,10 @@ class PagePresenter extends AbstractPresenter
                     ->addField('custom_attributes[meta_description]');
             });
         }, 'Meta');
+        $this->addTab(function (Tab $tab) {
+            $tab->addRow(function (Row $row) {
+                $row->addField('images[main]');
+            });
+        }, 'Изображения');
     }
 }

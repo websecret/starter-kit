@@ -29,6 +29,18 @@ class FormServiceProvider extends ServiceProvider
         Form::component('adminSelect', 'admin.partials.form.components.select', ['name', 'list', 'selected', 'selectAttributes', 'labelName', 'optionsAttributes', 'optgroupsAttributes', 'wrapped' => true]);
         Form::component('adminSelectUnwrapped', 'admin.partials.form.components.select', ['name', 'list', 'selected', 'selectAttributes', 'labelName', 'optionsAttributes', 'optgroupsAttributes', 'wrapped' => false]);
 
+        Form::component('adminSelect', 'admin.partials.form.components.select', ['name', 'list', 'selected', 'selectAttributes', 'labelName', 'optionsAttributes', 'optgroupsAttributes', 'wrapped' => true]);
+        Form::component('adminSelectUnwrapped', 'admin.partials.form.components.select', ['name', 'list', 'selected', 'selectAttributes', 'labelName', 'optionsAttributes', 'optgroupsAttributes', 'wrapped' => false]);
+
+        Form::component('adminSelectMultiple', 'admin.partials.form.components.select-multiple', ['name', 'list', 'selected', 'selectAttributes', 'labelName', 'optionsAttributes', 'optgroupsAttributes', 'wrapped' => true]);
+        Form::component('adminSelectMultipleUnwrapped', 'admin.partials.form.components.select-multiple', ['name', 'list', 'selected', 'selectAttributes', 'labelName', 'optionsAttributes', 'optgroupsAttributes', 'wrapped' => false]);
+
+        Form::component('adminCheckboxes', 'admin.partials.form.components.checkboxes', ['name', 'list', 'values', 'options', 'labelName', 'wrapped' => true]);
+        Form::component('adminCheckboxesUnwrapped', 'admin.partials.form.components.checkboxes', ['name', 'list', 'values', 'options', 'labelName', 'wrapped' => false]);
+
+        Form::component('adminRadios', 'admin.partials.form.components.radios', ['name', 'list', 'value', 'options', 'labelName', 'wrapped' => true]);
+        Form::component('adminRadiosUnwrapped', 'admin.partials.form.components.radios', ['name', 'list', 'value', 'options', 'labelName', 'wrapped' => false]);
+
         Form::component('adminBoolean', 'admin.partials.form.components.boolean', ['name', 'value', 'options', 'labelName', 'wrapped' => true]);
         Form::component('adminBooleanUnwrapped', 'admin.partials.form.components.boolean', ['name', 'value', 'options', 'labelName', 'wrapped' => false]);
 
@@ -43,6 +55,9 @@ class FormServiceProvider extends ServiceProvider
 
         Form::component('adminSlug', 'admin.partials.form.components.slug', ['name', 'value', 'from', 'locked', 'attributes', 'labelName', 'wrapped' => true]);
         Form::component('adminSlugUnwrapped', 'admin.partials.form.components.slug', ['name', 'value', 'from', 'locked', 'attributes', 'labelName', 'wrapped' => false]);
+
+        Form::component('adminDate', 'admin.partials.form.components.date', ['name', 'value', 'attributes', 'labelName', 'wrapped' => true]);
+        Form::component('adminDateUnwrapped', 'admin.partials.form.components.date', ['name', 'value', 'attributes', 'labelName', 'wrapped' => false]);
 
         Form::component('adminImages', 'admin.partials.form.components.images', ['name', 'value', 'multiple', 'type', 'attributes', 'labelName', 'wrapped' => true]);
         Form::component('adminImagesUnwrapped', 'admin.partials.form.components.images', ['name', 'value', 'multiple', 'type', 'attributes', 'labelName', 'wrapped' => false]);

@@ -32,7 +32,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        {{ Form::adminImages('images', $page->images) }}
+                        {{ Form::adminImages('images', $page->images, true, 'main', ['title' => 'text']) }}
                     </div>
                 </div>
             </div>

@@ -59,7 +59,7 @@ class FormServiceProvider extends ServiceProvider
         Form::component('adminDate', 'admin.partials.form.components.date', ['name', 'value', 'attributes', 'labelName', 'wrapped' => true]);
         Form::component('adminDateUnwrapped', 'admin.partials.form.components.date', ['name', 'value', 'attributes', 'labelName', 'wrapped' => false]);
 
-        Form::component('adminImages', 'admin.partials.form.components.images', ['name', 'value', 'multiple', 'type', 'attributes', 'labelName', 'wrapped' => true]);
-        Form::component('adminImagesUnwrapped', 'admin.partials.form.components.images', ['name', 'value', 'multiple', 'type', 'attributes', 'labelName', 'wrapped' => false]);
+        Form::component('adminImages', 'admin.partials.form.components.images', ['name', 'value', 'multiple', 'type', 'customAttributes', 'labelName', 'wrapped' => true]);
+        Form::component('adminImagesUnwrapped', 'admin.partials.form.components.images', ['name', 'value', 'multiple', 'type', 'customAttributes', 'labelName', 'wrapped' => false]);
     }
 }

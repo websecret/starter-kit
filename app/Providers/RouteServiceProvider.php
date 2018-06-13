@@ -79,17 +79,30 @@ class RouteServiceProvider extends ServiceProvider
 
     public function register()
     {
-        Route::macro('admin', function ($controllerName, $modelName = null) {
-            if (is_null($modelName)) {
-                $modelName = camel_case($controllerName);
-            }
-            Route::get('/', $controllerName . 'Controller@index')->name('index');
-            Route::get('add', $controllerName . 'Controller@form')->name('add');
-            Route::post('store/{' . $modelName . '?}', $controllerName . 'Controller@store')->name('store');
-            Route::group(['prefix' => '{' . $modelName . '}'], function ($route) use ($controllerName) {
-                $route->get('edit', $controllerName . 'Controller@form')->name('edit');
-                $route->get('delete', $controllerName . 'Controller@delete')->name('delete');
-                $route->post('fast', $controllerName . 'Controller@fast')->name('fast');
+        Route::macro('adminGroup', function ($model, $options = []) {
+            $namespace = str_replace('App\Models\\', '', $model);
+            $parts = explode('\\', $namespace);
+            $routeParts = array_map(function ($part) {
+                return kebab_case(str_plural($part));
+            }, $parts);
+            $options['prefix'] = array_get($options, 'prefix', implode('/', $routeParts));
+            $options['as'] = array_get($options, 'as', implode('.', $routeParts) . '.');
+            Route::group($options, function () use ($model) {
+                Route::admin($model);
+            });
+        });
+        Route::macro('admin', function ($model) {
+            $namespace = str_replace('App\Models\\', '', $model);
+            $parts = explode('\\', $namespace);
+            $modelName = camel_case(last($parts));
+            //Route::model($modelName, $model);
+            Route::get('/', $namespace . 'Controller@index')->name('index');
+            Route::get('add', $namespace . 'Controller@form')->name('add');
+            Route::post('store/{' . $modelName . '?}', $namespace . 'Controller@store')->name('store');
+            Route::group(['prefix' => '{' . $modelName . '}'], function ($route) use ($namespace) {
+                $route->get('edit', $namespace . 'Controller@form')->name('edit');
+                $route->get('delete', $namespace . 'Controller@delete')->name('delete');
+                $route->post('fast', $namespace . 'Controller@fast')->name('fast');
             });
         });
     }

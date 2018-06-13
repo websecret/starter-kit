@@ -23,13 +23,8 @@ Route::group(['middleware' => 'role:admin'], function ($route) {
         Route::post('images', 'UploadController@images')->name('images');
     });
 
-    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
-        Route::admin('User');
-    });
-
-    Route::group(['prefix' => 'pages', 'as' => 'pages.'], function () {
-        Route::admin('Page');
-    });
+    Route::adminGroup(\App\Models\User\User::class);
+    Route::adminGroup(\App\Models\Page::class);
 
 });
 

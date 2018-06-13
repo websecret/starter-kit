@@ -2,10 +2,16 @@
 
 namespace App\Models\Image;
 
+use App\FieldTypes\TranslatableType;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CustomAttributes\CustomAttributesScheme;
+use App\Models\CustomAttributes\CustomAttributableInterface;
+use App\Models\CustomAttributes\CustomAttributableTrait;
 
-class Image extends Model
+class Image extends Model implements CustomAttributableInterface
 {
+    use CustomAttributableTrait;
+
     protected $fillable = [
         'type',
         'path',
@@ -33,15 +39,22 @@ class Image extends Model
         return $query->orderBy('order');
     }
 
-    public function getUrl($size = 'original')
+    public function getUrl($size = 'original', $imageable = null)
     {
+        $imageable = $imageable ? $imageable : $this->imageable;
         $parts = [
             config('images.url'),
-            $this->imageable->getImagesUploadPath(),
+            $imageable->getImagesUploadPath(),
             $this->type,
             $size,
             $this->path,
         ];
         return implode('/', $parts);
+    }
+
+    public function getCustomAttributesScheme()
+    {
+        return (new CustomAttributesScheme())
+            ->add('title', new TranslatableType());
     }
 }

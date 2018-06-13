@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller as BaseController;
 use App\Models\CustomAttributes\CustomAttributableInterface;
 use Illuminate\Http\Request;
-use FormBuilder;
 
 abstract class Controller extends BaseController
 {
@@ -14,10 +13,10 @@ abstract class Controller extends BaseController
     public function index(Request $request)
     {
         $data = $this->getIndexViewData($request);
-//        if ($request->ajax()) {
-//            return $data;
-//        }
-        return view($this->getIndexViewPath(), $this->getIndexViewData($request));
+        if ($request->ajax()) {
+            return $data;
+        }
+        return view($this->getIndexViewPath(), $data);
     }
 
     public function form(Request $request, $model = null)
@@ -29,13 +28,19 @@ abstract class Controller extends BaseController
     public function store(Request $request, $model = null)
     {
         $model = $this->getModelInstance($model);
-        if ($form = $this->getForm($request, $model)) {
-            if (!$form->isValid()) {
-                return ['result' => 'error', 'errors' => $form->getErrors()];
-            }
-        }
+        $this->validateStore($request, $model);
         $model = $this->save($request, $model);
         return $this->actionsAfterSave($request, $model);
+    }
+
+    protected function validateStore(Request $request, $model)
+    {
+        return $this->validate($request, $this->getStoreValidationRules($request, $model));
+    }
+
+    protected function getStoreValidationRules(Request $request, $model)
+    {
+        return [];
     }
 
     protected function save(Request $request, $model)
@@ -155,7 +160,12 @@ abstract class Controller extends BaseController
 
     protected function getViewsPath()
     {
-        return 'admin.' . str_plural(kebab_case($this->getModelVariableName()));
+        $namespace = str_replace('App\Models\\', '', $this->getModel());
+        $parts = explode('\\', $namespace);
+        $routeParts = array_map(function ($part) {
+            return kebab_case(str_plural($part));
+        }, $parts);
+        return 'admin.' . implode('.', $routeParts);
     }
 
     protected function getIndexViewPath()
@@ -166,41 +176,28 @@ abstract class Controller extends BaseController
     protected function getIndexViewData(Request $request)
     {
         $modelClass = $this->getModel();
-        $items = $modelClass::query()->latest()->paginate();
+        $items = $modelClass::query()->with($this->getRelations())->latest()->paginate();
         return [
-            str_plural(kebab_case($this->getModelVariableName())) => $items,
+            str_plural(camel_case($this->getModelVariableName())) => $items,
         ];
+    }
+
+    protected function getRelations()
+    {
+        return [];
     }
 
     protected function getFormViewPath()
     {
-        return 'admin.partials.entity.form';
+        return $this->getViewsPath() . '.form';
     }
 
     protected function getFormViewData(Request $request, $model)
     {
         $data = [
-            'entity' => $model,
-            'entitiesName' => str_plural(kebab_case($this->getModelVariableName())),
+            camel_case($this->getModelVariableName()) => $model,
         ];
 
-        if ($form = $this->getForm($request, $model)) {
-            $data['form'] = $this->getForm($request, $model);
-        }
-
         return $data;
-    }
-
-    protected function getForm(Request $request, $model)
-    {
-        return FormBuilder::create($this->getFormClass(), [
-            'model' => $model,
-            'language_name' => 'labels',
-        ]);
-    }
-
-    protected function getFormClass()
-    {
-        return '\\App\\Forms\\' . $this->getModelVariableName() . 'Form';
     }
 }

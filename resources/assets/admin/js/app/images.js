@@ -34,8 +34,8 @@ function handleImageInputChange() {
                     }
                     $.each(images, function (i, path) {
                         let $image = $clone.clone();
-                        $image.find('.js-image__path').prop('disabled', false).val(path);
-                        $image.find('.js-image__is-main').prop('disabled', false);
+                        $image.find(':input').prop('disabled', false);
+                        $image.find('.js-image__path').val(path);
                         $image.find('.js-image__img').attr('src', path);
                         $image.insertBefore($clone);
                         $image.removeClass('js-image--clone');
@@ -65,8 +65,16 @@ function handleImageRemoveClick(e) {
 
 function setMainImage($wrapper) {
     let $images = $wrapper.find('.js-image').not('.js-image--clone');
-    $images.each(function (i, photo) {
+    $images.each(function (i, $image) {
         $(this).find('.js-image__is-main').val(i);
+        $(this).find(':input').each(function() {
+            let $input = $(this);
+            let dataNameBefore = $input.data('name-before');
+            let dataNameAfter = $input.data('name-after');
+            if(dataNameBefore || dataNameAfter) {
+                $input.attr('name', (dataNameBefore ? dataNameBefore : '') + '[' + i + ']' + (dataNameAfter ? dataNameAfter : ''));
+            }
+        });
     });
     if (!$images.find('.js-image__is-main:checked').length) {
         $images.first().find('.js-image__label').click();

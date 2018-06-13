@@ -161,7 +161,9 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\ObserverServiceProvider::class,
+        App\Providers\FormServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
+        App\Providers\BreadcrumbsServiceProvider::class,
 
     ],
 
@@ -213,8 +215,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Date' => Jenssegers\Date\Date::class,
-        'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
         'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

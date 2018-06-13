@@ -2,7 +2,7 @@
 
 return [
     'title' => env('APP_NAME', env('ADMIN_TITLE')),
-    'logo' => 'images/websecret/logo-dark.svg',
+    'logo' => 'assets/admin/images/websecret/logo-dark.svg',
     'fluid' => false,
     'menu' => [
         [
@@ -13,7 +13,7 @@ return [
             'exact' => true,
         ],
         [
-            'route' => 'admin.users.index',
+            'route' => 'admin.users.users.index',
             'routeParams' => [],
             'icon' => 'fe fe-users',
             'text' => 'Пользователи',

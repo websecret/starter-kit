@@ -19,10 +19,10 @@
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                            <a class="dropdown-item" href="#todo">
-                                <i class="dropdown-icon fe fe-settings"></i> Настройки
-                            </a>
-                            <div class="dropdown-divider"></div>
+                            {{--<a class="dropdown-item" href="#todo">--}}
+                                {{--<i class="dropdown-icon fe fe-settings"></i> Настройки--}}
+                            {{--</a>--}}
+                            {{--<div class="dropdown-divider"></div>--}}
                             <a class="dropdown-item" href="{{ action('Admin\Auth\LoginController@logout') }}" >
                                 <i class="dropdown-icon fe fe-log-out"></i> {{ __('theme.logout') }}
                             </a>

@@ -1,4 +1,4 @@
-@extends('admin.partials.entity.index', ['section' => 'pages', 'items' => $pages])
+@extends('admin.partials.entity.index', ['section' => 'pages', 'route' => 'pages', 'items' => $pages])
 
 @section('table')
     <div class="table-responsive">
@@ -19,7 +19,7 @@
                         <div class="small text-muted">{{ $page->id }}</div>
                     </td>
                     <td class="w-1">
-                        <span class="avatar" style="background-image: url({{ $page->admin_main_image_urls['main']['admin-table'] }})"></span>
+                        <span class="avatar" style="background-image: url({{ $page->loadMainImageUrl('admin-table') }})"></span>
                     </td>
                     <td>
                         <div>

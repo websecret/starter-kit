@@ -1,14 +1,17 @@
 require('froala-editor/js/froala_editor.pkgd.min');
 require('froala-editor/js/languages/ru');
 
+require('selectize')
+
+
 $(document).ready(function() {
 
-    $(document).on('click', '.nav-link', toggleActive)
-
-    function toggleActive() {
-        $('.nav-link').removeClass('active')
-        $(this).addClass('active')
-    }
+    // $(document).on('click', '.nav-link', toggleActive)
+    //
+    // function toggleActive() {
+    //     $('.nav-link').removeClass('active')
+    //     $(this).addClass('active')
+    // }
 
     function init() {
 
@@ -28,6 +31,11 @@ $(document).ready(function() {
             return false;
         });
 
+        $('.js-input-selectize').selectize({
+            delimiter: ',',
+            persist: false
+        });
+
         $('[data-toggle="card-collapse"]').on('click', function(e) {
             let $card = $(this).closest(DIV_CARD);
             $card.toggleClass('card-collapsed');
@@ -42,7 +50,7 @@ $(document).ready(function() {
             return false;
         });
 
-        $('.js-input__wysiwyg').each(function () {
+        $('.js-input-wysiwyg').each(function () {
             $(this).froalaEditor({
                 language: 'ru',
                 theme: 'gray',

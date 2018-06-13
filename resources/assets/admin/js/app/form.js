@@ -3,6 +3,7 @@ require('jquery-form')
 $(document).on('submit', '.js-form', submitFormAjax);
 
 const CLASS_WRAP = 'js-form__wrapper'
+const CLASS_INPUT = 'js-form__input'
 const CLASS_INPUT_ERROR = 'js-form__input-error'
 const CLASS_HAS_ERROR = 'is-invalid'
 const BTN_LOADING = 'btn-loading'
@@ -10,7 +11,7 @@ const BTN_LOADING = 'btn-loading'
 function submitFormAjax(e) {
     e.preventDefault()
     let $form = $(this)
-    $form.find(`.${CLASS_WRAP}`).removeClass(CLASS_HAS_ERROR)
+    $form.find(`.${CLASS_INPUT}`).removeClass(CLASS_HAS_ERROR)
     $form.find(`.${CLASS_INPUT_ERROR}`).html('')
     let $button = $form.find('button[type=submit]')
     $button.addClass(BTN_LOADING).attr('disabled', true)
@@ -51,6 +52,9 @@ function handleFormAjaxError($form, data) {
     $.each(data.errors, function (input, errors) {
         let inputArray = input.split('.');
         let $input = $form.find(':input[name="' + input + '"]');
+        if (!$input.length) {
+            $input = $form.find(':input[name="' + input + '[]"]');
+        }
         if (!$input.length && inputArray.length == 1) {
             $input = $form.find(':input[name="' + inputArray[0] + '[]"]:eq(' + inputArray[1] + ')');
         }
@@ -68,9 +72,10 @@ function handleFormAjaxError($form, data) {
         if ($input.length) {
             let $wrapper = $input.closest(`.${CLASS_WRAP}`);
             let $errorBlock = $wrapper.find(`.${CLASS_INPUT_ERROR}`);
-            $input.addClass(CLASS_HAS_ERROR);
-            let $helpBlock = '<span class="help-block">' + text + '</span>';
-            $errorBlock.html($helpBlock);
+            if ($input.attr('type') !== 'checkbox') {
+                $input.addClass(CLASS_HAS_ERROR);
+            }
+            $errorBlock.show().html(text);
         } else {
             toastr.error(text);
         }

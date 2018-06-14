@@ -30,6 +30,7 @@ abstract class Controller extends BaseController
 
     public function reorder(Request $request)
     {
+        abort_unless($this->canOrder, 404);
         $data = $request->input('data', []);
         foreach ($data as $order => $value) {
             $modelClass = $this->getModel();

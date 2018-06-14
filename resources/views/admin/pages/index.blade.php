@@ -1,4 +1,4 @@
-@extends('admin.partials.entity.index', ['section' => 'pages', 'route' => 'pages', 'items' => $pages])
+@extends('admin.partials.entity.index', ['section' => 'pages', 'route' => 'pages', 'items' => $pages, 'canOrder' => $canOrder])
 
 @section('table')
     <div class="table-responsive">

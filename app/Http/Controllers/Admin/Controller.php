@@ -10,6 +10,8 @@ abstract class Controller extends BaseController
 {
     abstract protected function getModel();
 
+    protected $canOrder = false;
+
     public function index(Request $request)
     {
         $data = $this->getIndexViewData($request);
@@ -17,6 +19,23 @@ abstract class Controller extends BaseController
             return $data;
         }
         return view($this->getIndexViewPath(), $data);
+    }
+
+    public function order(Request $request)
+    {
+        abort_unless($this->canOrder, 404);
+        $data = $this->getOrderViewData($request);
+        return view($this->getOrderViewPath(), $data);
+    }
+
+    public function reorder(Request $request)
+    {
+        $data = $request->input('data', []);
+        foreach ($data as $order => $value) {
+            $modelClass = $this->getModel();
+            $modelClass::find($value['id'])->update([$this->getOrderFieldName() => $order]);
+        }
+        return $this->actionsAfterReorder($request);
     }
 
     public function form(Request $request, $model = null)
@@ -55,7 +74,12 @@ abstract class Controller extends BaseController
 
     protected function getDataFromSaveRequest(Request $request)
     {
-        return $request->all();
+        $data = $request->all();
+        if ($this->canOrder) {
+            $modelClass = $this->getModel();
+            $data['order'] = $modelClass::query()->count() ? ($modelClass::query()->max($this->getOrderFieldName()) + 1) : 0;
+        }
+        return $data;
     }
 
     public function delete(Request $request, $model)
@@ -179,6 +203,21 @@ abstract class Controller extends BaseController
         $items = $modelClass::query()->with($this->getRelations())->latest()->paginate();
         return [
             str_plural(camel_case($this->getModelVariableName())) => $items,
+            'canOrder' => $this->canOrder,
+        ];
+    }
+
+    protected function getOrderViewPath()
+    {
+        return $this->getViewsPath() . '.order';
+    }
+
+    protected function getOrderViewData(Request $request)
+    {
+        $modelClass = $this->getModel();
+        $items = $modelClass::query()->orderBy($this->getOrderFieldName())->get();
+        return [
+            str_plural(camel_case($this->getModelVariableName())) => $items,
         ];
     }
 
@@ -199,5 +238,25 @@ abstract class Controller extends BaseController
         ];
 
         return $data;
+    }
+
+    protected function getOrderFieldName()
+    {
+        return 'order';
+    }
+
+    protected function actionsAfterReorder(Request $request)
+    {
+        $message = $this->getReorderSuccessMessage();
+        return array_merge([
+            'result' => 'success'
+        ], $message ? [
+            'message' => $message,
+        ] : []);
+    }
+
+    protected function getReorderSuccessMessage()
+    {
+        return __('messages.reorder.success');
     }
 }

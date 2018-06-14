@@ -97,6 +97,10 @@ class RouteServiceProvider extends ServiceProvider
             $modelName = camel_case(last($parts));
             //Route::model($modelName, $model);
             Route::get('/', $namespace . 'Controller@index')->name('index');
+            Route::group(['prefix' => 'order', 'as' => 'order'], function ($route) use ($namespace) {
+                Route::get('/', $namespace . 'Controller@order');
+                Route::post('/', $namespace . 'Controller@reorder');
+            });
             Route::get('add', $namespace . 'Controller@form')->name('add');
             Route::post('store/{' . $modelName . '?}', $namespace . 'Controller@store')->name('store');
             Route::group(['prefix' => '{' . $modelName . '}'], function ($route) use ($namespace) {

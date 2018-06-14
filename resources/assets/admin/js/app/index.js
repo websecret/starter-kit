@@ -5,4 +5,5 @@ require('./pjax');
 require('./form');
 require('./fast');
 require('./images');
+require('./sortable');
 require('./inputs/index');

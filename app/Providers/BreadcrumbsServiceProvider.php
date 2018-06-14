@@ -17,6 +17,10 @@ class BreadcrumbsServiceProvider extends ServiceProvider
                 $trail->parent('admin.home.index');
                 $trail->push(__('sections.' . $section . '.title'), route('admin.' . $routeName .'.index'));
             });
+            Breadcrumbs::for('admin.' . $routeName . '.order', function ($trail) use($routeName, $section) {
+                $trail->parent('admin.' . $routeName . '.index');
+                $trail->push(__('sections.' . $section . '.order'), route('admin.' . $routeName .'.order'));
+            });
             Breadcrumbs::for('admin.' . $routeName . '.add', function ($trail) use($routeName, $section) {
                 $trail->parent('admin.' . $routeName . '.index');
                 $trail->push(__('sections.' . $section . '.add'), route('admin.' . $routeName .'.add'));

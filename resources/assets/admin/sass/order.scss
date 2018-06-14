@@ -1,0 +1,56 @@
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+.order {
+  margin: 1rem;
+  margin-left: -0.25rem;
+  &__list {
+    padding-left: 1.25rem;
+    display: block;
+  }
+  &__item {
+    display: block;
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      padding-right: 0.75rem;
+      margin-bottom: 0.5rem;
+      background-color: #FFF;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 40, 100, 0.12);
+      border-radius: 3px;
+      &__icon {
+        cursor: pointer;
+        font-size: 1.25rem;
+        color: $text-muted;
+        padding: 0.5rem 0.75rem;
+        &, &:hover, &:active, &:focus {
+          text-decoration: none;
+        }
+        &:hover, &:active, &:focus {
+          color: $blue;
+        }
+      }
+    }
+  }
+  &__item-placeholder {
+    position: relative;
+    &:before {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 5px;
+      margin-top: -6px;
+      border: 1px $blue dashed;
+      border-radius: 3px;
+    }
+  }
+}

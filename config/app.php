@@ -164,6 +164,7 @@ return [
         App\Providers\FormServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
         App\Providers\BreadcrumbsServiceProvider::class,
+        App\Providers\CollectionExtensions::class,
 
     ],
 

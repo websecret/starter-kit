@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="mb-5">
                     @component('admin.partials.components.tabs')
-                        @slot('header', ['Основное', 'Meta', 'Изображения'])
+                        @slot('header', ['Основное', 'Meta'])
                         @slot('tab0')
                             <div class="row">
                                 <div class="col">
@@ -43,14 +43,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    {{ Form::adminTranslatableWysiwyg('custom_attributes[meta_description]', $page->custom_attributes->meta_description, [], __('labels.meta_description')) }}
-                                </div>
-                            </div>
-                        @endslot
-                        @slot('tab2')
-                            <div class="row">
-                                <div class="col">
-                                    {{ Form::adminImages('images', $page->images, true, 'main', ['title' => 'text']) }}
+                                    {{ Form::adminTranslatableTextarea('custom_attributes[meta_description]', $page->custom_attributes->meta_description, [], __('labels.meta_description')) }}
                                 </div>
                             </div>
                         @endslot

@@ -1,10 +1,10 @@
-
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
 window.$ = window.jQuery = require('jquery');
 require('bootstrap');
+window.moment = require('moment');
 
-require('jquery-pjax')
+require('jquery-pjax');
 
 window.axios = require('axios');
 

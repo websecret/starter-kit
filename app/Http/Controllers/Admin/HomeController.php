@@ -11,4 +11,14 @@ class HomeController extends BaseController
     {
         return view('admin.home.index');
     }
+
+    public function newCounts()
+    {
+        return [
+//            'reviews' => [
+//                'type' => 'success',
+//                'count' => Review::query()->ofStatus('new')->count(),
+//            ],
+        ];
+    }
 }

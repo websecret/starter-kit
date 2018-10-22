@@ -1,4 +1,6 @@
-@extends('admin.partials.entity.index', ['section' => 'pages', 'route' => 'pages', 'items' => $pages, 'canOrder' => $canOrder])
+@php($models = $pages)
+
+@extends('admin.partials.entity.index')
 
 @section('table')
     <div class="table-responsive">
@@ -6,49 +8,31 @@
             <thead>
             <tr>
                 <th class="text-center w-1">#</th>
-                <th colspan="2">{{ __("labels.title") }}</th>
+                <th>{{ __("labels.title") }}</th>
                 <th class="text-center">{{ __("labels.is_disabled") }}</th>
                 <th>{{ __("labels.created_at") }}</th>
                 <th class="text-center"></th>
             </tr>
             </thead>
             <tbody>
-            @foreach($pages as $page)
-                <tr class="js-fast__wrapper" data-fast-link="{{ route('admin.pages.fast', $page) }}">
+            @foreach($models as $model)
+                <tr class="js-fast__wrapper" data-fast-link="{{ route($routeName . '.fast', $model) }}">
                     <td class="text-center">
-                        <div class="small text-muted">{{ $page->id }}</div>
-                    </td>
-                    <td class="w-1">
-                        <span class="avatar" style="background-image: url({{ $page->loadMainImageUrl('admin-table') }})"></span>
+                        @include('admin.partials.entity.table.id')
                     </td>
                     <td>
-                        <div>
-                            <a href="{{ route('admin.pages.edit', $page) }}">
-                                {{ $page->custom_attributes->title }}
-                            </a>
-                        </div>
-                        <div class="small text-muted">
-                            {{ $page->slug }}
-                        </div>
+                        @include('admin.partials.entity.table.title', ['title' => $model->custom_attributes->title])
                     </td>
                     <td class="text-center">
-                        @include('admin.partials.entity.actions.fast', [
-                            'name' => 'is_disabled',
-                            'value' => $page->is_disabled,
-                        ])
+                        @include('admin.partials.entity.actions.fast')
                     </td>
                     <td>
-                        <div class="small text-muted">{{ $page->created_at->format('d.m.Y H:i') }}</div>
-                        <div>{{ Date::instance($page->created_at)->diffForHumans() }}</div>
+                        @include('admin.partials.entity.table.date')
                     </td>
                     <td class="text-center">
                         <div class="item-action text-right">
-                            @include('admin.partials.entity.actions.dropdown-edit', [
-                                'link' => route('admin.pages.edit', $page)
-                            ])
-                            @include('admin.partials.entity.actions.dropdown-delete', [
-                                'link' => route('admin.pages.delete', $page)
-                            ])
+                            @include('admin.partials.entity.actions.dropdown-edit')
+                            @include('admin.partials.entity.actions.dropdown-delete')
                         </div>
                     </td>
                 </tr>
@@ -56,11 +40,5 @@
             </tbody>
         </table>
     </div>
-    @if(!$pages->lastPage())
-        <div class="card-footer">
-            <nav>
-                {{ $pages->links() }}
-            </nav>
-        </div>
-    @endif
+    @include('admin.partials.entity.partials.paginator')
 @endsection

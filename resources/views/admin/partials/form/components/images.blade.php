@@ -6,7 +6,7 @@
     <div class="row gutters-sm js-images__wrapper" data-images-type="{{ $type }}" data-images-is-multiple="{{ $multiple }}">
         <div class="col-12 mb-3">
             <div class="custom-file">
-                <input type="file" class="custom-file-input js-images__input">
+                <input type="file" class="custom-file-input js-images__input" {{ $multiple ? 'multiple="multiple"' : '' }}>
                 <label class="custom-file-label">Выберите изображение</label>
             </div>
         </div>

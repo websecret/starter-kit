@@ -51,10 +51,4 @@ class Image extends Model implements CustomAttributableInterface
         ];
         return implode('/', $parts);
     }
-
-    public function getCustomAttributesScheme()
-    {
-        return (new CustomAttributesScheme())
-            ->add('title', new TranslatableType());
-    }
 }

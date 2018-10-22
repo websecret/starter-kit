@@ -6,12 +6,17 @@ use File;
 
 trait ImageableTrait
 {
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function getImagesConfig()
+    public function imagesConfig()
     {
         return [];
     }
@@ -28,7 +33,7 @@ trait ImageableTrait
 
     public function getImagesSizes()
     {
-        $config = $this->getImagesConfig();
+        $config = $this->imagesConfig();
         if (empty($config)) {
             $config = [
                 'main' => [],

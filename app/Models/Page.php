@@ -7,74 +7,33 @@ use App\Models\CustomAttributes\CustomAttributesScheme;
 use App\Models\CustomAttributes\CustomAttributableInterface;
 use App\Models\CustomAttributes\CustomAttributableTrait;
 use App\Models\Image\ImageableTrait;
-use Cviebrock\EloquentSluggable\Sluggable;
+use App\Models\Traits\MetaTrait;
+use App\Models\Traits\RouteSluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model implements CustomAttributableInterface
 {
-    use Sluggable;
+    use RouteSluggable;
     use CustomAttributableTrait;
-    use ImageableTrait;
+    use MetaTrait;
 
     protected $fillable = [
         'slug',
         'is_disabled',
-        'order',
+        'meta_title',
+        'meta_description',
     ];
-
-    public function sluggable()
-    {
-        return ['slug' => ['source' => 'title']];
-    }
-
-    public function getGenerateMetaTitleAttribute()
-    {
-        return $this->meta_title ? $this->meta_title : $this->title;
-    }
-
-    public function getGenerateMetaDescriptionAttribute()
-    {
-        return $this->meta_description ? $this->meta_description : $this->title;
-    }
-
-    public function scopeFilter($query, $data)
-    {
-        $title = array_get($data, 'title');
-
-        $query
-            ->when($title, function ($q) use ($title) {
-                return $q->where('title', 'like', "%$title%");
-            });
-
-        return $query;
-    }
-
-    public function scopeActive($q)
-    {
-        return $q->whereIsDisabled(0);
-    }
 
     public function getCustomAttributesScheme()
     {
         return (new CustomAttributesScheme())
             ->add('title', new TranslatableType())
             ->add('content', new TranslatableType())
-            ->add('meta_title', new TranslatableType())
-            ->add('meta_description', new TranslatableType());
+        ;
     }
 
-    public function getImagesConfig()
+    public function getGeneratedMetaTitleAttribute()
     {
-        return [
-            'main' => [
-                'cell' => [
-                    'width' => 582,
-                    'height' => 366,
-                    'quality' => 90,
-                    'crop' => true,
-                    'upsize' => true,
-                ],
-            ],
-        ];
+        return $this->meta_title ? $this->meta_title : $this->custom_attributes->title->__toString();
     }
 }

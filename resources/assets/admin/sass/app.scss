@@ -5,6 +5,7 @@
 @import "images";
 @import "order";
 
+
 .modal {
   .close {
     font-size: 0;
@@ -19,5 +20,36 @@
 .item-action {
   a:hover {
     text-decoration: none;
+  }
+}
+
+.td-small {
+  text-align: center;
+  font-size: 87.5%;
+  font-weight: 400;
+  color: #9aa0ac;
+}
+
+.nav-link .badge {
+  margin-left: .25rem;
+}
+.nav-link .badge, .nav-item .badge {
+  position: static;
+}
+
+.container-fluid {
+  padding-right: 1.75rem;
+  padding-left: 1.75rem;
+}
+
+.card-body {
+  .nav-tabs .nav-link {
+    padding-top: 0;
+  }
+}
+
+.modal {
+  .card {
+    margin-bottom: 0;
   }
 }

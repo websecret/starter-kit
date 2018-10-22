@@ -1,15 +1,29 @@
-deploy_to_stage:
+deploy_to_dev:
     stage: deploy
     script:
         - "cd /home/deploy/htdocs/$CI_PROJECT_NAME"
-        - "git checkout master"
-        - "php artisan down"
         - "git pull"
-        - "composer install"
-        - "php artisan migrate --force"
+        - >
+          if git diff HEAD~ --name-only|grep composer.json; then
+            composer install
+          fi;
+        - >
+          if git diff HEAD~ --name-only|grep database/migrations; then
+            php artisan migrate
+          fi;
+        - >
+          if git diff HEAD~ --name-only|grep resources/assets; then
+            yarn
+            yarn run prod
+          fi;
         - "php artisan images:config"
-        - "yarn"
-        - "yarn run prod"
-        - "php artisan up"
+        - >
+          if git diff HEAD~ --name-only|grep front; then
+            cd /home/deploy/htdocs/$CI_PROJECT_NAME/front
+            yarn
+            yarn run build
+          fi;
+#        - "pm2 reload starter-kit"
+#        - "pm2 reload imgproxy"
     only:
-         - "master"
+         - master

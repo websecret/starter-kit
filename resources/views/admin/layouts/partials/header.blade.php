@@ -4,9 +4,8 @@
             <a class="header-brand" href="{{ route('admin.home.index') }}">
                 @if(config('admin.logo'))
                     <img src="{{ asset(config('admin.logo')) }}" class="header-brand-img" alt="{{ config('admin.title') }}">
-                @else
-                    {{ config('admin.title') }}
                 @endif
+                {{ config('admin.title') }}
             </a>
             <div class="d-flex order-lg-2 ml-auto">
                 @if(auth()->user())

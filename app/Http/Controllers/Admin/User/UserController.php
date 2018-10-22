@@ -28,16 +28,20 @@ class UserController extends Controller
                 Rule::exists('roles', 'id'),
             ],
         ];
+
         if (!$model->exists) {
             $rules['password'][] = 'required';
         }
+
         return $rules;
     }
 
     protected function save(Request $request, $model)
     {
         $user = parent::save($request, $model);
+
         $user->syncRoles(array_wrap($request->input('role')));
+
         return $user;
     }
 }

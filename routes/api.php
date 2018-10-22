@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::api(\App\Models\Page::class);
+
+Route::get('pages/{page}', 'PageController@show');

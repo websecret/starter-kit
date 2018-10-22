@@ -1,9 +1,14 @@
 require('./init');
-require('./helpers');
 require('./confirm');
-require('./pjax');
-require('./form');
 require('./fast');
+require('./files');
+require('./form');
+require('./helpers');
 require('./images');
+require('./modal');
+require('./multiple');
+require('./new-counts');
+require('./pjax');
 require('./sortable');
+require('./tab');
 require('./inputs/index');

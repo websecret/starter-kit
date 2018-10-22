@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User\Role;
+
 return [
-    'title' => env('APP_NAME', env('ADMIN_TITLE')),
+    'title' => env('ADMIN_TITLE', env('APP_NAME')),
     'logo' => 'assets/admin/images/websecret/logo-dark.svg',
     'fluid' => false,
     'menu' => [
@@ -26,5 +28,9 @@ return [
             'text' => 'Страницы',
             'exact' => false,
         ],
+    ],
+
+    'permitted-routes' => [
+        Role::ROLE_ADMIN => '*',
     ],
 ];

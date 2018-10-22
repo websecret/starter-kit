@@ -15,6 +15,7 @@ function submitFormAjax(e) {
     $form.find(`.${CLASS_INPUT_ERROR}`).html('')
     let $button = $form.find('button[type=submit]')
     $button.addClass(BTN_LOADING).attr('disabled', true)
+    let isModal = $form.closest('#modal').length ? true : false;
     $form.ajaxSubmit({
         success: function (data) {
             $button.removeClass(BTN_LOADING).attr('disabled', false)
@@ -22,13 +23,20 @@ function submitFormAjax(e) {
             if (data.result != 'success') {
                 handleFormAjaxError($form, data);
             } else {
-                $form.trigger('form-ajax-success', [data]);
+                $form.trigger('form-ajax-success', [data, isModal]);
                 if ($form.hasClass('js-form--redirect')) {
                     let redirectLink = data.link || data.redirect;
                     setTimeout(() => window.location.href = redirectLink, 2000);
                 }
-                if ($form.hasClass('js-form--back')) {
-                    $('.js-back').click()
+                if(isModal) {
+                    $form.closest('#modal').modal('hide')
+                }
+                if(data.redirect) {
+                    if ($form.closest('#modal').length) {
+                        $('.js-pjax--current-url').click()
+                    } else {
+                        $('.js-back').click()
+                    }
                 }
                 if (data.message) {
                     toastr.success(data.message);

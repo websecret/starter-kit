@@ -1,7 +1,6 @@
 require('froala-editor/js/froala_editor.pkgd.min');
+require('froala-editor/js/third_party/embedly.min');
 require('froala-editor/js/languages/ru');
-
-require('selectize')
 
 
 $(document).ready(function() {
@@ -12,6 +11,41 @@ $(document).ready(function() {
     //     $('.nav-link').removeClass('active')
     //     $(this).addClass('active')
     // }
+
+    let $modalRelatedTargets = [];
+    $('#modal').on('show.bs.modal', function (e) {
+        let $button = $(e.relatedTarget)
+        $modalRelatedTargets.push($button)
+        let url = $button.data('url')
+        $.get(url, (response) => {
+            let $popup = $(this).find('.modal-content')
+            $popup.html(response.html)
+            window.init()
+        })
+    })
+    $(document).on('hidden.bs.modal', function (e) {
+        if($modalRelatedTargets) $modalRelatedTargets = $modalRelatedTargets.slice(0, -1);
+        let $modal = $(this)
+        if($modal.attr('id') == 'modal') {
+            $modal.find('.modal-content').html('')
+        }
+    });
+
+    $(document).on('form-ajax-success', function(e, data, isModal) {
+        let entity = data.entity
+        if(isModal && $modalRelatedTargets.length) {
+            let $modalRelatedTarget = $modalRelatedTargets[0];
+            if($modalRelatedTarget.hasClass('js-input-wysiwyg__extended-button')) {
+                let $input = $modalRelatedTarget.closest('.js-form__wrapper').find('.js-input-wysiwyg');
+                insertWysiwygEntity($input, entity, data.id);
+            }
+        }
+    })
+
+    function insertWysiwygEntity($wysiwyg, entity, id) {
+        let string = '$' + entity + '-' + id;
+        $wysiwyg.froalaEditor('html.insert', '<p>' + string + '</p>', true);
+    }
 
     function init() {
 
@@ -31,11 +65,6 @@ $(document).ready(function() {
             return false;
         });
 
-        $('.js-input-selectize').selectize({
-            delimiter: ',',
-            persist: false
-        });
-
         $('[data-toggle="card-collapse"]').on('click', function(e) {
             let $card = $(this).closest(DIV_CARD);
             $card.toggleClass('card-collapsed');
@@ -51,16 +80,19 @@ $(document).ready(function() {
         });
 
         $('.js-input-wysiwyg').each(function () {
-            $(this).froalaEditor({
+            let $input = $(this);
+            $input.froalaEditor({
                 language: 'ru',
                 theme: 'gray',
                 imageManager: false,
                 pluginsEnabled: [
-                    'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons', 'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quote', 'save', 'table', 'url', 'video', 'wordPaste',
+                    'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons', 'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quote', 'save', 'table', 'url', 'video', 'embedly', 'wordPaste',
                 ],
                 requestHeaders: {
                     'X-CSRF-TOKEN': token.content,
                 },
+                imageUploadURL: '/admin/upload/froala-images',
+                videoUpload: false,
                 toolbarButtons: [
                     'fullscreen',
                     '|',
@@ -72,7 +104,7 @@ $(document).ready(function() {
                     '|',
                     'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote',
                     '|',
-                    'insertLink', 'insertImage', 'insertTable',
+                    'insertLink', 'insertImage', 'insertVideo', 'embedly',  'insertTable',
                     '|',
                     'insertHR', 'selectAll', 'clearFormatting',
                     '|',
@@ -80,6 +112,11 @@ $(document).ready(function() {
                 ],
             });
         });
+        
+
+
+        window.selectize()
+        window.initSlug()
     }
 
     window.init = init;

@@ -1,1 +1,1 @@
-Разработка - <a href="https://websecret.by/?utm_source=zubrcapital-crm&utm_medium=link&utm_campaign=zubrcapital-crm">Веб Секрет</a>
+Разработка - <a href="https://websecret.by/?utm_source=ont-crm&utm_medium=link&utm_campaign=ont-crm">Веб Секрет</a>

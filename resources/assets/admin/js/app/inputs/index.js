@@ -1,5 +1,5 @@
 require('./password');
 require('./translatable');
 require('./slug');
-require('./date');
+require('./datetime');
 require('./selectize');

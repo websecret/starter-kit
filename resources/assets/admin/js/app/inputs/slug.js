@@ -1,16 +1,20 @@
 let slug = require('slug');
 
-$('.js-input-slug__field').each(function () {
-    let $slug = $(this);
-    let inputs = $slug.data('slug-from');
-    for (let input of inputs) {
-        let inputSelector = getInputSelector(input);
-        let $form = $slug.closest('.js-form');
-        $form.on('input', inputSelector, function () {
-            generateSlug($slug);
-        })
-    }
-});
+function initSlug() {
+    $('.js-input-slug__field').each(function () {
+        let $slug = $(this);
+        let inputs = $slug.data('slug-from');
+        for (let input of inputs) {
+            let inputSelector = getInputSelector(input);
+            let $form = $slug.closest('.js-form');
+            $form.on('input', inputSelector, function () {
+                generateSlug($slug);
+            })
+        }
+    });
+}
+
+window.initSlug = initSlug
 
 $(document).on('click', '.js-input-slug__toggle', function (e) {
     e.preventDefault();

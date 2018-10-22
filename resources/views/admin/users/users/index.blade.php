@@ -1,4 +1,6 @@
-@extends('admin.partials.entity.index', ['section' => 'users', 'route' => 'users.users', 'items' => $users])
+@php($models = $users)
+
+@extends('admin.partials.entity.index')
 
 @section('table')
     <div class="table-responsive">
@@ -14,36 +16,23 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($users as $user)
+            @foreach($models as $model)
                 <tr>
                     <td class="text-center">
-                        <div class="small text-muted">{{ $user->id }}</div>
+                        @include('admin.partials.entity.table.id')
                     </td>
                     <td>
-                        <div>
-                            <a href="{{ route('admin.users.users.edit', $user) }}">
-                                {{ $user->full_name }}
-                            </a>
-                        </div>
+                        @include('admin.partials.entity.table.title', ['title' => $model->full_name])
                     </td>
+                    <td>{{ $model->email }}</td>
+                    <td>{{ $model->role->name ?? null }}</td>
                     <td>
-                        <div>{{ $user->email }}</div>
-                    </td>
-                    <td>
-                        <div>{{ $user->role->name ?? null }}</div>
-                    </td>
-                    <td>
-                        <div class="small text-muted">{{ $user->created_at->format('d.m.Y H:i') }}</div>
-                        <div>{{ Date::instance($user->created_at)->diffForHumans() }}</div>
+                        @include('admin.partials.entity.table.date')
                     </td>
                     <td class="text-center">
                         <div class="item-action text-right">
-                            @include('admin.partials.entity.actions.dropdown-edit', [
-                                'link' => route('admin.users.users.edit', $user)
-                            ])
-                            @include('admin.partials.entity.actions.dropdown-delete', [
-                                'link' => route('admin.users.users.delete', $user)
-                            ])
+                            @include('admin.partials.entity.actions.dropdown-edit')
+                            @include('admin.partials.entity.actions.dropdown-delete')
                         </div>
                     </td>
                 </tr>
@@ -51,11 +40,5 @@
             </tbody>
         </table>
     </div>
-    @if(!$users->lastPage())
-        <div class="card-footer">
-            <nav>
-                {{ $users->links() }}
-            </nav>
-        </div>
-    @endif
+    @include('admin.partials.entity.partials.paginator')
 @endsection

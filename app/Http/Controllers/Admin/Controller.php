@@ -4,13 +4,27 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as BaseController;
 use App\Models\CustomAttributes\CustomAttributableInterface;
+use App\Services\Model\Admin as AdminModel;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 abstract class Controller extends BaseController
 {
     abstract protected function getModel();
 
+    protected $canAdd = true;
+    protected $canEdit = true;
+    protected $canDelete = true;
     protected $canOrder = false;
+    protected $paginateIndex = true;
+    protected $redirectAfterSave = true;
+
+    protected $adminModelService;
+
+    public function __construct()
+    {
+        $this->adminModelService = new AdminModel($this->getModel());
+    }
 
     public function index(Request $request)
     {
@@ -23,19 +37,13 @@ abstract class Controller extends BaseController
 
     public function order(Request $request)
     {
-        abort_unless($this->canOrder, 404);
         $data = $this->getOrderViewData($request);
         return view($this->getOrderViewPath(), $data);
     }
 
     public function reorder(Request $request)
     {
-        abort_unless($this->canOrder, 404);
-        $data = $request->input('data', []);
-        foreach ($data as $order => $value) {
-            $modelClass = $this->getModel();
-            $modelClass::find($value['id'])->update([$this->getOrderFieldName() => $order]);
-        }
+        $this->reorderActions($request);
         return $this->actionsAfterReorder($request);
     }
 
@@ -43,6 +51,12 @@ abstract class Controller extends BaseController
     {
         $model = $this->getModelInstance($model);
         return view($this->getFormViewPath(), $this->getFormViewData($request, $model));
+    }
+
+    public function show(Request $request, $model)
+    {
+        $model = $this->getModelInstance($model);
+        return view($this->getShowViewPath(), $this->getShowViewData($request, $model));
     }
 
     public function store(Request $request, $model = null)
@@ -55,30 +69,50 @@ abstract class Controller extends BaseController
 
     protected function validateStore(Request $request, $model)
     {
-        return $this->validate($request, $this->getStoreValidationRules($request, $model));
+        return $this->validate($request, $this->getStoreValidationRules($request, $model), [], __('labels'));
     }
 
     protected function getStoreValidationRules(Request $request, $model)
     {
-        return [];
+        $rules = [];
+        $fillable = collect($model->getFillable());
+
+        if ($fillable->contains('slug')) {
+            $rules['slug'] = 'required';
+        }
+
+        if ($fillable->contains('slug')) {
+            $rules['slug'] = [
+                'required',
+                Rule::unique($model->getTable())->ignoreModel($model)
+            ];
+        }
+
+        return $rules;
     }
 
     protected function save(Request $request, $model)
     {
-        $data = $this->getDataFromSaveRequest($request);
-        $model->fill($data)->save();
+        $data = $this->getDataFromSaveRequest($request, $model);
+        $this->fillModelBeforeSave($model, $data)->save();
         if ($model instanceof CustomAttributableInterface) {
             $model->saveCustomAttributes(array_get($data, 'custom_attributes', []));
         }
         return $model;
     }
 
-    protected function getDataFromSaveRequest(Request $request)
+    protected function fillModelBeforeSave($model, $data)
+    {
+        $model->fill($data);
+        return $model;
+    }
+
+    protected function getDataFromSaveRequest(Request $request, $model)
     {
         $data = $request->all();
-        if ($this->canOrder) {
+        if ($this->canOrder && !$model->exists) {
             $modelClass = $this->getModel();
-            $data['order'] = $modelClass::query()->count() ? ($modelClass::query()->max($this->getOrderFieldName()) + 1) : 0;
+            $data[$this->getOrderFieldName()] = $modelClass::query()->count() ? ($modelClass::query()->max($this->getOrderFieldName()) + 1) : 0;
         }
         return $data;
     }
@@ -86,14 +120,14 @@ abstract class Controller extends BaseController
     public function delete(Request $request, $model)
     {
         $model = $this->getModelInstance($model);
-        $model->delete();
+        $this->deleteActions($request, $model);
         return $this->actionsAfterDelete($request);
     }
 
     public function fast(Request $request, $model)
     {
         $model = $this->getModelInstance($model);
-        $model->update([$request->input('name') => $request->input('value')]);
+        $model = $this->fastActions($request, $model);
         return $this->actionsAfterFast($request, $model);
     }
 
@@ -102,16 +136,26 @@ abstract class Controller extends BaseController
         $redirect = redirect($this->redirectToAfterSave($model));
         $message = $this->getSaveSuccessMessage();
         if ($request->ajax()) {
-            return array_merge([
-                'result' => 'success'
-            ], $message ? [
-                'message' => $message,
-            ] : []);
+            return $this->ajaxDataAfterSave($model, $message);
         }
         if ($message) {
             $redirect->with('message-success', $message);
         }
-        return $redirect;
+        if($this->redirectAfterSave) {
+            return $redirect;
+        }
+    }
+
+    protected function ajaxDataAfterSave($model, $message)
+    {
+        return array_merge([
+            'result' => 'success',
+            'entity' => $this->adminModelService->getViewsName(),
+            'id' => $model->{$model->getKeyName()},
+            'redirect' => $this->redirectAfterSave ? true : false,
+        ], $message ? [
+            'message' => $message,
+        ] : []);
     }
 
     protected function actionsAfterFast(Request $request, $model)
@@ -178,19 +222,19 @@ abstract class Controller extends BaseController
         return $model;
     }
 
-    protected function getModelVariableName()
-    {
-        return class_basename($this->getModel());
-    }
-
     protected function getViewsPath()
     {
-        $namespace = str_replace('App\Models\\', '', $this->getModel());
-        $parts = explode('\\', $namespace);
-        $routeParts = array_map(function ($part) {
-            return kebab_case(str_plural($part));
-        }, $parts);
-        return 'admin.' . implode('.', $routeParts);
+        return $this->adminModelService->getViewsPath();
+    }
+
+    protected function getSectionPath()
+    {
+        return $this->adminModelService->getSectionPath();
+    }
+
+    protected function getRouteName()
+    {
+        return 'admin.' . $this->adminModelService->getRouteName();
     }
 
     protected function getIndexViewPath()
@@ -200,12 +244,47 @@ abstract class Controller extends BaseController
 
     protected function getIndexViewData(Request $request)
     {
+        return array_merge(
+            $this->getIndexViewModelData($request),
+            $this->getIndexViewAdditionalData($request),
+            $this->getIndexViewFilterData($request)
+        );
+    }
+
+    protected function getIndexViewModelData(Request $request)
+    {
         $modelClass = $this->getModel();
-        $items = $modelClass::query()->with($this->getRelations())->latest()->paginate();
+        $query = $this->prepareQueryForIndex($modelClass::query(), $request)->with($this->getRelations())->latest();
+        if (method_exists($modelClass, 'scopeFilter')) {
+            $query->filter($request->input('filter', []));
+        }
+        $items = $this->paginateIndex ? $query->paginate() : $query->get();
         return [
-            str_plural(camel_case($this->getModelVariableName())) => $items,
-            'canOrder' => $this->canOrder,
+            $this->adminModelService->getViewsPluralName() => $items,
         ];
+    }
+
+    protected function prepareQueryForIndex($query, Request $request)
+    {
+        return $query;
+    }
+
+    protected function getIndexViewAdditionalData(Request $request)
+    {
+        return [
+            'canAdd' => $this->canAdd,
+            'canEdit' => $this->canEdit,
+            'canDelete' => $this->canDelete,
+            'canOrder' => $this->canOrder,
+            'paginate' => $this->paginateIndex,
+            'sectionPath' => $this->getSectionPath(),
+            'routeName' => $this->getRouteName(),
+        ];
+    }
+
+    protected function getIndexViewFilterData(Request $request)
+    {
+        return [];
     }
 
     protected function getOrderViewPath()
@@ -215,10 +294,26 @@ abstract class Controller extends BaseController
 
     protected function getOrderViewData(Request $request)
     {
+        return array_merge(
+            $this->getOrderViewModelData($request),
+            $this->getOrderViewAdditionalData($request)
+        );
+    }
+
+    protected function getOrderViewModelData(Request $request)
+    {
         $modelClass = $this->getModel();
         $items = $modelClass::query()->orderBy($this->getOrderFieldName())->get();
         return [
-            str_plural(camel_case($this->getModelVariableName())) => $items,
+            $this->adminModelService->getViewsPluralName() => $items,
+        ];
+    }
+
+    protected function getOrderViewAdditionalData(Request $request)
+    {
+        return [
+            'sectionPath' => $this->getSectionPath(),
+            'routeName' => $this->getRouteName(),
         ];
     }
 
@@ -234,11 +329,50 @@ abstract class Controller extends BaseController
 
     protected function getFormViewData(Request $request, $model)
     {
-        $data = [
-            camel_case($this->getModelVariableName()) => $model,
-        ];
+        return array_merge(
+            $this->getFormViewModelData($request, $model),
+            $this->getFormViewAdditionalData($request, $model)
+        );
+    }
 
+    protected function getShowViewPath()
+    {
+        return $this->getViewsPath() . '.show';
+    }
+
+    protected function getShowViewData(Request $request, $model)
+    {
+        return [
+            $this->adminModelService->getViewsName() => $model,
+            'sectionPath' => $this->getSectionPath(),
+        ];
+    }
+
+    protected function getFormViewModelData(Request $request, $model)
+    {
+        $data = [
+            $this->adminModelService->getViewsName() => $model,
+        ];
         return $data;
+    }
+
+    protected function getFormViewAdditionalData(Request $request, $model)
+    {
+        return [
+            'sectionPath' => $this->getSectionPath(),
+            'routeName' => $this->getRouteName(),
+        ];
+    }
+
+    protected function deleteActions(Request $request, $model)
+    {
+        $model->delete();
+    }
+
+    protected function fastActions(Request $request, $model)
+    {
+        $model->update([$request->input('name') => $request->input('value')]);
+        return $model;
     }
 
     protected function getOrderFieldName()
@@ -256,8 +390,44 @@ abstract class Controller extends BaseController
         ] : []);
     }
 
+    protected function reorderActions(Request $request)
+    {
+        $data = $request->input('data', []);
+        foreach ($data as $order => $value) {
+            $modelClass = $this->getModel();
+            $modelClass::find($value['id'])->update([$this->getOrderFieldName() => $order]);
+        }
+    }
+
     protected function getReorderSuccessMessage()
     {
         return __('messages.reorder.success');
+    }
+
+    public function ajaxSelect(Request $request)
+    {
+        $q = trim($request->input('q', ''));
+        if ($q == '') return [];
+        $modelClass = $this->getModel();
+        $items = $modelClass::query()->ajaxSelect($q)->latest()->take(20)->get();
+        return $items->map(function ($item) {
+            return [
+                'key' => $item->{$item->getKeyName()},
+                'value' => data_get($item, static::getAjaxSelectValueField()),
+            ];
+        });
+    }
+
+    protected static function getAjaxSelectValueField()
+    {
+        return 'title';
+    }
+
+    public static function getAjaxSelectValue($model = null)
+    {
+        if (!$model) return [];
+        return [
+            $model->{$model->getKeyName()} => $model->{static::getAjaxSelectValueField()},
+        ];
     }
 }

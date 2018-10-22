@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Model\Admin as AdminModel;
 use Breadcrumbs;
 use DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider as ServiceProvider;
 
@@ -11,23 +12,29 @@ class BreadcrumbsServiceProvider extends ServiceProvider
     public function register(): void
     {
         parent::register();
-        Breadcrumbs::macro('forAdmin', function ($routeName, $section = null) {
-            $section = is_null($section) ? $routeName : $section;
-            Breadcrumbs::for('admin.' . $routeName . '.index', function ($trail) use($routeName, $section) {
-                $trail->parent('admin.home.index');
-                $trail->push(__('sections.' . $section . '.title'), route('admin.' . $routeName .'.index'));
+        Breadcrumbs::macro('forAdmin', function ($model, $parentModel = null) {
+            $adminModelService = new AdminModel($model);
+            $parentRouteName = 'admin.home.index';
+            if($parentModel) {
+                $parentRouteName = 'admin.' . (new AdminModel($parentModel))->getRouteName() . '.index';
+            }
+            $routeName = 'admin.' . $adminModelService->getRouteName();
+            $section = $adminModelService->getSectionPath();
+            Breadcrumbs::for($routeName . '.index', function ($trail) use ($routeName, $parentRouteName, $section) {
+                $trail->parent($parentRouteName);
+                $trail->push(__($section . '.title'), route($routeName . '.index'));
             });
-            Breadcrumbs::for('admin.' . $routeName . '.order', function ($trail) use($routeName, $section) {
-                $trail->parent('admin.' . $routeName . '.index');
-                $trail->push(__('sections.' . $section . '.order'), route('admin.' . $routeName .'.order'));
+            Breadcrumbs::for($routeName . '.order', function ($trail) use ($routeName, $section) {
+                $trail->parent($routeName . '.index');
+                $trail->push(__('theme.order'), route($routeName . '.order'));
             });
-            Breadcrumbs::for('admin.' . $routeName . '.add', function ($trail) use($routeName, $section) {
-                $trail->parent('admin.' . $routeName . '.index');
-                $trail->push(__('sections.' . $section . '.add'), route('admin.' . $routeName .'.add'));
+            Breadcrumbs::for($routeName . '.add', function ($trail) use ($routeName, $section) {
+                $trail->parent($routeName . '.index');
+                $trail->push(__($section . '.add'), route($routeName . '.add'));
             });
-            Breadcrumbs::for('admin.' . $routeName . '.edit', function ($trail, $model) use($routeName, $section) {
-                $trail->parent('admin.' . $routeName . '.index');
-                $trail->push(__('sections.' . $section . '.edit'), route('admin.' . $routeName .'.edit', $model));
+            Breadcrumbs::for($routeName . '.edit', function ($trail, $model) use ($routeName, $section) {
+                $trail->parent($routeName . '.index');
+                $trail->push(__($section . '.edit'), route($routeName . '.edit', $model));
             });
         });
     }

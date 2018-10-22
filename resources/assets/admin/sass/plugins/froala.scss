@@ -1,8 +1,11 @@
 @import "~froala-editor/css/froala_editor.css";
+@import "~froala-editor/css/froala_editor.pkgd.min";
+@import "~froala-editor/css/froala_style.min";
+@import "~froala-editor/css/themes/gray";
 
 .fr-counter {
   position: absolute;
-  margin-right: 0px;
+  margin-right: 0;
   bottom: 0;
   right: 0;
   z-index: 2;

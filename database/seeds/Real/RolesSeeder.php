@@ -11,7 +11,7 @@ class RolesSeeder extends Seeder
 
         foreach (Role::ROLES as $key => $role) {
             Role::create([
-                'name' => __("sections.users.roles.$role"),
+                'name' => __("sections.users.users.roles.$role"),
                 'slug' => $role,
             ]);
         }

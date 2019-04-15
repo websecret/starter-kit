@@ -10,28 +10,31 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "cross-env": "^5.1",
-        "laravel-mix": "^2.0"
+        "cross-env": "^5.2",
+        "laravel-mix": "^4.0",
+        "sass": "^1.17.2",
+        "sass-loader": "7.*",
+        "vue-template-compiler": "^2.6.7"
     },
     "dependencies": {
         "axios": "^0.18",
         "bootbox": "^4.4.0",
-        "bootstrap": "4.1.0",
+        "bootstrap": "^4.3",
         "bootstrap-datepicker": "^1.8.0",
         "froala-editor": "^2.8.1",
         "jquery": "^3.3.1",
         "jquery-form": "^4.2.2",
         "jquery-pjax": "^2.0.1",
         "jquery-sortable": "^0.9.13",
-        "lodash": "^4.17.4",
-        "moment": "^2.22.2",
-        "popper.js": "^1.14.3",
-        "selectize": "^0.12.4",
-        "slug": "^0.9.1",
-        "sortablejs": "^1.7.0",
+        "lodash": "^4.17.11",
+        "moment": "^2.24.0",
+        "popper.js": "^1.14.7",
+        "selectize": "^0.12.6",
+        "slug": "^1.0.0",
+        "sortablejs": "^1.8.3",
         "tabler-ui": "^0.0.32",
-        "tempusdominus-bootstrap-4": "^5.1.1",
+        "tempusdominus-bootstrap-4": "^5.1.2",
         "toastr": "^2.1.4",
-        "unicode": "^10.0.0"
+        "unicode": "^11.0.1"
     }
 }

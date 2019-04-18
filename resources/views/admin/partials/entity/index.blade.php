@@ -24,10 +24,15 @@
                     <div class="row justify-content-between d-flex flex-grow-1">
                         <div class="col">
                             <h3 class="card-title">
-                                {{ __($sectionPath . '.title') }}
-                                {{--<div class="badge badge-info filter__icon js_filter__toggle">--}}
-                                {{--<i class="fa fa-filter"></i>--}}
-                                {{--</div>--}}
+                                @if($count)
+                                    <div class="tag tag-primary tag-upper">{{ trans_choice($sectionPath.'.count', $items->total()) }}</div>
+                                @else
+                                    <div class="tag tag-primary tag-upper">{{ __($sectionPath . '.title') }}</div>
+                                    {{--<div class="badge badge-info filter__icon js_filter__toggle">--}}
+                                    {{--<i class="fa fa-filter"></i>--}}
+                                    {{--</div>--}}
+                                @endif
+                                @yield('counts')
                             </h3>
                         </div>
                         <div class="col text-right">

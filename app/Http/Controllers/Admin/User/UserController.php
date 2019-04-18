@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    protected $count = true;
     protected function getModel()
     {
         return User::class;

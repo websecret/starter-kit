@@ -53,3 +53,9 @@
     margin-bottom: 0;
   }
 }
+
+.tag-upper {
+  user-select: text !important;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}

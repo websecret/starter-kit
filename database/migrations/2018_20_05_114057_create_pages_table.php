@@ -12,7 +12,7 @@ class CreatePagesTable extends Migration
             $table->increments('id');
             $table->string('slug');
             $table->boolean('is_disabled')->default(0);
-            $table->integer('order')->unsigned();
+            $table->integer('order')->increments()->unsigned()->default(0);
             $table->timestamps();
         });
     }

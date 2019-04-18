@@ -18,6 +18,7 @@ return [
             'roles' => [
                 \App\Models\User\Role::ROLE_ADMIN => 'Администратор',
             ],
+            'count' => ':count пользователь|:count пользователя|:count пользователей',
         ],
     ],
 

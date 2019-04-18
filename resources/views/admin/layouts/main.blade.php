@@ -2,7 +2,7 @@
 
 @section('layout')
     @php($fluid = $fluid ?? config('admin.fluid'))
-    <div class="page-main">
+    <div class="flex-fill">
         @include('admin.layouts.partials.header', ['fluid' => $fluid])
         @include('admin.layouts.partials.header-nav', ['fluid' => $fluid])
         <div class="my-3 my-md-5" id="pjax-container">

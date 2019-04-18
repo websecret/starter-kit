@@ -12,6 +12,7 @@ class Admin
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @throws AuthorizationException
      * @return mixed
      */
     public function handle($request, Closure $next)

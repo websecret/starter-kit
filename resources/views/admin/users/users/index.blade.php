@@ -7,7 +7,7 @@
         <table class="table table-hover table-outline table-vcenter text-nowrap card-table">
             <thead>
             <tr>
-                <th class="text-center w-1">#</th>
+                @include('admin.partials.entity.table.sort-th', ['orderBy' => 'id', 'title' => '#', 'classes' => ['text-center', 'w-1']])
                 <th>{{ __("labels.full_name") }}</th>
                 <th>{{ __("labels.email") }}</th>
                 <th>{{ __("labels.role") }}</th>
@@ -25,7 +25,7 @@
                         @include('admin.partials.entity.table.title', ['title' => $model->full_name])
                     </td>
                     <td>{{ $model->email }}</td>
-                    <td>{{ $model->role->name ?? null }}</td>
+                    <td>{{ $model->role ? trans('sections.users.users.roles.'. $model->role->name) : null }}</td>
                     <td>
                         @include('admin.partials.entity.table.date')
                     </td>

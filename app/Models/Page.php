@@ -19,6 +19,7 @@ class Page extends Model implements CustomAttributableInterface
 
     protected $fillable = [
         'slug',
+        'order',
         'is_disabled',
         'meta_title',
         'meta_description',

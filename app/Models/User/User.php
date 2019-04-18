@@ -2,17 +2,23 @@
 
 namespace App\Models\User;
 
+use App\Models\Traits\Orderable;
+use Hash;
 use App\Models\Traits\Nameable;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Hash;
-use Ultraware\Roles\Traits\HasRoleAndPermission;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    use HasRoleAndPermission;
+    use HasRoles;
     use Nameable;
+    use Orderable;
+    use Notifiable;
+
+    protected $orderable = [
+        'id',
+    ];
 
     protected $fillable = [
         'first_name', 'last_name', 'middle_name', 'email', 'password',
@@ -29,12 +35,12 @@ class User extends Authenticatable
 
     public function getRoleAttribute()
     {
-        return $this->getRoles()->first();
+        return $this->roles()->first();
     }
 
     public function canAccessRoute($routeName)
     {
-        $accessibleRoutePatterns = config('admin.permitted-routes.' . $this->role->slug, []);
+        $accessibleRoutePatterns = config('admin.permitted-routes.' . optional($this->role)->name, []);
 
         return str_is($accessibleRoutePatterns, $routeName);
     }

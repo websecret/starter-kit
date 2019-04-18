@@ -14,7 +14,7 @@ class UsersSeeder extends Seeder
             'first_name' => 'Веб Секрет',
 			'email' => 'info@websecret.by',
             'password' => config('websecret.password'),
-        ])->roles()->sync(Role::whereSlug(Role::ROLE_ADMIN)->pluck('id'));
+        ])->roles()->sync(Role::whereName(Role::ROLE_ADMIN)->pluck('id'));
 
     }
 }

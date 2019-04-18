@@ -18,6 +18,9 @@ abstract class Controller extends BaseController
     protected $canOrder = false;
     protected $paginateIndex = true;
     protected $redirectAfterSave = true;
+    protected $count = false;
+    protected $defaultOrderColumn = 'created_at';
+    protected $defaultOrderDirection = 'desc';
 
     protected $adminModelService;
 
@@ -254,11 +257,26 @@ abstract class Controller extends BaseController
     protected function getIndexViewModelData(Request $request)
     {
         $modelClass = $this->getModel();
-        $query = $this->prepareQueryForIndex($modelClass::query(), $request)->with($this->getRelations())->latest();
+        $query = $this->prepareQueryForIndex($modelClass::query(), $request)->with($this->getRelations());
+        $toAppends = [];
         if (method_exists($modelClass, 'scopeFilter')) {
+            $toAppends['filter'] = $request->input('filter', []);
             $query->filter($request->input('filter', []));
         }
-        $items = $this->paginateIndex ? $query->paginate() : $query->get();
+
+        if (method_exists($modelClass, 'scopeCustomOrderBy')) {
+            $sortBy = $request->input('sort_by', $this->defaultOrderColumn);
+            $sortDirection = $request->input('sort_direction', $this->defaultOrderDirection);
+
+            $toAppends['sort_by'] = $sortBy;
+            $toAppends['sort_direction'] = $sortDirection;
+
+            $query->customOrderBy($sortBy, $sortDirection);
+        } else {
+            $query->orderBy($this->defaultOrderColumn, $this->defaultOrderDirection);
+        }
+
+        $items = $this->paginateIndex ? $query->paginate()->appends($toAppends) : $query->get();
         return [
             $this->adminModelService->getViewsPluralName() => $items,
         ];
@@ -277,6 +295,9 @@ abstract class Controller extends BaseController
             'canDelete' => $this->canDelete,
             'canOrder' => $this->canOrder,
             'paginate' => $this->paginateIndex,
+            'count' => $this->count,
+            'defaultSortBy' => $this->defaultOrderColumn,
+            'defaultSortDirection' => $this->defaultOrderDirection,
             'sectionPath' => $this->getSectionPath(),
             'routeName' => $this->getRouteName(),
         ];

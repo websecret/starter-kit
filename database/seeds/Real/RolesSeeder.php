@@ -9,10 +9,9 @@ class RolesSeeder extends Seeder
     {
         Role::query()->delete();
 
-        foreach (Role::ROLES as $key => $role) {
+        foreach (Role::ROLES as $role) {
             Role::create([
-                'name' => __("sections.users.users.roles.$role"),
-                'slug' => $role,
+                'name' => $role,
             ]);
         }
     }

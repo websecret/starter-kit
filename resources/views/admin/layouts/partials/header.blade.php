@@ -14,7 +14,7 @@
                             {{--<span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>--}}
                             <span class="ml-2 d-none d-lg-block">
                                 <span class="text-default">{{ auth()->user()->fullName }}</span>
-                                <small class="text-muted d-block mt-1">{{ trans('sections.users.users.roles.'.optional(auth()->user()->role)->name) }}</small>
+                                <small class="text-muted d-block mt-1">{{ optional(auth()->user()->role)->title }}</small>
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">

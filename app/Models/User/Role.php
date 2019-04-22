@@ -2,7 +2,7 @@
 
 namespace App\Models\User;
 
-use Spatie\Permission\Models\Role as BaseRole;
+use Silber\Bouncer\Database\Role as BaseRole;
 
 class Role extends BaseRole
 {

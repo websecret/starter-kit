@@ -25,7 +25,7 @@
                         @include('admin.partials.entity.table.title', ['title' => $model->full_name])
                     </td>
                     <td>{{ $model->email }}</td>
-                    <td>{{ $model->role ? trans('sections.users.users.roles.'. $model->role->name) : null }}</td>
+                    <td>{{ optional($model->role)->title }}</td>
                     <td>
                         @include('admin.partials.entity.table.date')
                     </td>

@@ -2,19 +2,19 @@
 
 namespace App\Models\User;
 
-use App\Models\Traits\Orderable;
 use Hash;
 use App\Models\Traits\Nameable;
-use Spatie\Permission\Traits\HasRoles;
+use App\Models\Traits\Orderable;
 use Illuminate\Notifications\Notifiable;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasRoles;
     use Nameable;
     use Orderable;
     use Notifiable;
+    use HasRolesAndAbilities;
 
     protected $orderable = [
         'id',

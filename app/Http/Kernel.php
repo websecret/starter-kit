@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Role;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\Authenticate;
@@ -23,7 +24,6 @@ use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
-use Spatie\Permission\Middlewares\RoleMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -80,7 +80,7 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         //'auth' => Authenticate::class,
-        'role' => RoleMiddleware::class,
+        'role' => Role::class,
         'admin' => Admin::class,
     ];
 }

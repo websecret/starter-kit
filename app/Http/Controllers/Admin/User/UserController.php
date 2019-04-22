@@ -41,7 +41,7 @@ class UserController extends Controller
     {
         $user = parent::save($request, $model);
 
-        $user->syncRoles(array_wrap($request->input('role')));
+        $user->assign(array_wrap($request->input('role')));
 
         return $user;
     }

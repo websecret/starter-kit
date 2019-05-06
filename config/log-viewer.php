@@ -41,7 +41,7 @@ return [
         'enabled'    => true,
 
         'attributes' => [
-            'prefix'     => 'admin/log-viewer',
+            'prefix'     => 'admin/logs',
 
             'middleware' => ['web', 'role:admin'],
         ],

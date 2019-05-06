@@ -28,7 +28,7 @@
     @yield('layout')
 </div>
 @stack('modals')
-@stack('scripts')
 <script src="{{ mix('assets/admin/js/app.js') }}"></script>
+@stack('scripts')
 </body>
 </html>

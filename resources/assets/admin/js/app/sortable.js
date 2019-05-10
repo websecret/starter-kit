@@ -1,4 +1,3 @@
-import Sortable from 'sortablejs';
 require('jquery-sortable');
 
 $('.js-sortable').each(function () {
@@ -34,23 +33,3 @@ function prepareChildren(data) {
     }
     return data;
 }
-
-// $('.js-sortable').each(function () {
-//     let $sortable = $(this);
-//     Sortable.create($sortable.find('ul')[0], {
-//         group: 'sort',
-//         animation: 150,
-//         draggable: 'li',
-//         onSort: function (e) {
-//             let order = this.toArray();
-//             console.log(order);
-//             /*$.post($this.data('url'), {
-//                 order,
-//             }, function (result) {
-//                 if (result.result == 'success') {
-//                     toastr["success"](result.message ? result.message : 'Данные успешно сохранены');
-//                 }
-//             })*/
-//         },
-//     });
-// });

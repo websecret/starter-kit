@@ -18,7 +18,7 @@ return [
 	"digits" => "Поле :attribute должно содержать :digits цифр.",
 	"digits_between" => "Поле :attribute должно содержать от :min до :max цифр.",
 	"email" => "Поле :attribute имеет неверный формат",
-	"exists" => "Выбранное значение для :attribute уже существует.",
+	"exists" => "Выбранное значение для :attribute не существует.",
 	"image" => "Поле :attribute должно быть картинкой.",
 	"in" => "Выбранное значение для :attribute не верно.",
 	"integer" => "Поле :attribute должно быть целым числом.",
@@ -49,17 +49,16 @@ return [
 	"unique" => "Такое значение поля :attribute уже существует.",
 	"url" => "Поле :attribute имеет неверный формат.",
 
+    'custom' => [
+        'attribute-name' => [
+            'rule-name' => 'custom-message',
+        ],
+    ],
+
 	'attributes' => [
 		'title' => 'Заголовок',
 		'slug' => 'Ссылка',
 		'email' => 'Email',
 		'password' => 'Пароль',
 	],
-
-	'index' => [
-		'required' => 'Укажите :attribute',
-		'custom' => [
-		],
-	]
-
 ];

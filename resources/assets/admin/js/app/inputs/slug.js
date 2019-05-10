@@ -1,4 +1,4 @@
-let slug = require('slug');
+const slugify = require('@sindresorhus/slugify');
 
 function initSlug() {
     $('.js-input-slug__field').each(function () {
@@ -50,10 +50,7 @@ function generateSlug($slug, separator = '-') {
         }
     }
     slugString = slugString.split(separator).filter(_ => _ !== '').join(separator);
-    $slug.val(slug(slugString, {
-        lower: true,
-        replacement: separator,
-    }));
+    $slug.val(slugify(slugString));
 }
 
 function isInputLocked($input) {

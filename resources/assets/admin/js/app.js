@@ -6,7 +6,5 @@
  */
 
 require('./bootstrap');
-require('./tabler');
 require('./plugins/index');
-require('./entities/index');
 require('./app/index');

@@ -1,10 +1,9 @@
-@import "~tabler-ui/src/assets/scss/variables";
+@import "tabler/variables";
 @import "~bootstrap/scss/bootstrap";
-@import "~tabler-ui/src/assets/scss/dashboard/dashboard";
+@import "tabler/dashboard";
 @import "plugins";
 @import "images";
 @import "order";
-
 
 .modal {
   .close {

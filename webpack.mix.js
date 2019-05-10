@@ -1,4 +1,17 @@
 let mix = require('laravel-mix');
+let webpack = require('webpack');
+require('laravel-mix-bundle-analyzer');
+
+mix.webpackConfig({
+    plugins: [
+        // Only russian and english locales for moment.js
+        new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(ru)$/)
+    ]
+});
+
+if (mix.isWatching()) {
+    mix.bundleAnalyzer();
+}
 
 mix.options({
     processCssUrls: false,

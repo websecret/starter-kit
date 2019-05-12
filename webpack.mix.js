@@ -1,6 +1,11 @@
 let mix = require('laravel-mix');
 let webpack = require('webpack');
-require('laravel-mix-bundle-analyzer');
+
+// require('laravel-mix-bundle-analyzer');
+//
+// if (mix.isWatching()) {
+//     mix.bundleAnalyzer();
+// }
 
 mix.webpackConfig({
     plugins: [
@@ -9,9 +14,6 @@ mix.webpackConfig({
     ]
 });
 
-if (mix.isWatching()) {
-    mix.bundleAnalyzer();
-}
 
 mix.options({
     processCssUrls: false,

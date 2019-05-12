@@ -29,7 +29,7 @@
                                 @else
                                     <div class="tag tag-primary tag-upper">{{ __($sectionPath . '.title') }}</div>
                                     {{--<div class="badge badge-info filter__icon js_filter__toggle">--}}
-                                    {{--<i class="fa fa-filter"></i>--}}
+                                    {{--<i class="fe fe-filter"></i>--}}
                                     {{--</div>--}}
                                 @endif
                                 @yield('counts')

@@ -13,11 +13,10 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             {{-- Log Menu --}}
             <div class="card mb-4">
                 <div class="card-status bg-blue"></div>
-                <div class="card-header"><i class="fa fa-fw fa-flag"></i> Levels</div>
                 <div class="list-group list-group-flush log-menu">
                     @foreach($log->menu() as $levelKey => $item)
                         @if ($item['count'] === 0)
@@ -35,17 +34,17 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-10">
+        <div class="col-lg-9">
             {{-- Log Details --}}
             <div class="card mb-4">
                 <div class="card-status bg-blue"></div>
                 <div class="card-header">
                     <div class="group-btns pull-right">
                         <a href="{{ route('log-viewer::logs.download', [$log->date]) }}" class="btn btn-sm btn-success">
-                            <i class="fa fa-download"></i> DOWNLOAD
+                            <i class="fe fe-download"></i> DOWNLOAD
                         </a>
                         <a href="#delete-log-modal" class="btn btn-sm btn-danger" data-toggle="modal">
-                            <i class="fa fa-trash-o"></i> DELETE
+                            <i class="fe fe-trash"></i> DELETE
                         </a>
                     </div>
                 </div>
@@ -86,11 +85,11 @@
                                 <span class="input-group-append" style="height: 38px">
                                     @unless (is_null($query))
                                         <a href="{{ route('log-viewer::logs.show', [$log->date]) }}" class="btn btn-secondary">
-                                            ({{ $entries->count() }} results) <i class="fa fa-fw fa-times"></i>
+                                            ({{ $entries->count() }} results) <i class="fe fe-x-circle"></i>
                                         </a>
                                     @endunless
                                     <button id="search-btn" class="btn btn-primary">
-                                        <span class="fa fa-fw fa-search"></span>
+                                        <span class="fe fe-search"></span>
                                     </button>
                                 </span>
                             </div>
@@ -143,7 +142,7 @@
                                 <td class="text-right">
                                     @if ($entry->hasStack())
                                         <a class="btn btn-sm btn-light" role="button" data-toggle="collapse" href="#log-stack-{{ $key }}" aria-expanded="false" aria-controls="log-stack-{{ $key }}">
-                                            <i class="fa fa-toggle-on"></i> Stack
+                                            <i class="fe fe-toggle-right"></i> Stack
                                         </a>
                                     @endif
                                 </td>
@@ -185,8 +184,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">DELETE LOG FILE</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close">
+                            <i class="fe fe-x"></i>
                         </button>
                     </div>
                     <div class="modal-body">

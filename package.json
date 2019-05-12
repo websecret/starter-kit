@@ -19,6 +19,7 @@
         "webpack": "^4.30.0"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.8.2",
         "@sindresorhus/slugify": "^0.9.1",
         "axios": "^0.18",
         "bootbox": "^5.1",

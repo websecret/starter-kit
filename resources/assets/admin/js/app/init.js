@@ -83,6 +83,7 @@ $(document).ready(function() {
             let $input = $(this);
             $input.froalaEditor({
                 language: 'ru',
+                iconsTemplate: 'font_awesome_5',
                 theme: 'gray',
                 imageManager: false,
                 pluginsEnabled: [

@@ -19,7 +19,12 @@ mix.options({
     processCssUrls: false,
 });
 
-mix.copy('node_modules/tabler-ui/src/assets/fonts', 'public/assets/admin/fonts');
+// Font Awesome WebFonts
+mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.*', 'public/assets/admin/fonts/font-awesome');
+
+// Custom fonts
+mix.copy('resources/assets/admin/fonts', 'public/assets/admin/fonts');
+
 mix.copy('node_modules/tabler-ui/src/assets/images', 'public/assets/admin/images');
 mix.copy('resources/assets/admin/images', 'public/assets/admin/images');
 

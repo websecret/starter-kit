@@ -48,14 +48,14 @@
                             @endforeach
                             <td class="text-right">
                                 <a href="{{ route('log-viewer::logs.show', [$date]) }}" class="btn btn-sm btn-info">
-                                    <i class="fa fa-search"></i>
+                                    <i class="fe fe-search"></i>
                                 </a>
                                 <a href="{{ route('log-viewer::logs.download', [$date]) }}"
                                    class="btn btn-sm btn-success">
-                                    <i class="fa fa-download"></i>
+                                    <i class="fe fe-download"></i>
                                 </a>
                                 <a href="#delete-log-modal" class="btn btn-sm btn-danger" data-log-date="{{ $date }}">
-                                    <i class="fa fa-trash-o"></i>
+                                    <i class="fe fe-trash"></i>
                                 </a>
                             </td>
                         </tr>
@@ -85,8 +85,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">DELETE LOG FILE</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="btn btn-icon" data-dismiss="modal" aria-label="Close">
+                            <i class="fe fe-x"></i>
                         </button>
                     </div>
                     <div class="modal-body">

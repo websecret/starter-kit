@@ -9,7 +9,7 @@
     <div class="input-group date js-input-datetime" id="{{ $id }}" data-target-input="nearest">
         {{ Form::carbonDate($name, $value, $attributes) }}
         <div class="input-group-append" data-target="{{ $attributes['data-target'] }}" data-toggle="datetimepicker">
-            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            <div class="input-group-text"><i class="fe fe-calendar"></i></div>
         </div>
     </div>
 @endcomponent

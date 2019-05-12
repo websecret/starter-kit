@@ -2,23 +2,23 @@
 
 @section('layout')
     <div class="flex-fill">
-        @include('admin.layouts.partials.header', ['fluid' => false])
-        @include('admin.layouts.partials.header-nav', ['fluid' => false])
+        @include('admin.layouts.partials.header', ['fluid' => config('admin.fluid')])
+        @include('admin.layouts.partials.header-nav', ['fluid' => config('admin.fluid')])
         <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
-            <div class="container">
+            <div class="{{ config('admin.fluid') ? 'container-fluid' : 'container' }}">
                 <div class="row align-items-center">
                     <div class="col-lg order-lg-first">
                         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                             <li class="nav-item">
                                 <a href="{{ route('log-viewer::dashboard') }}"
                                    class="nav-link {{ Route::is('log-viewer::dashboard') ? 'active' : '' }}">
-                                    <i class="fa fa-dashboard"></i> Dashboard
+                                    <i class="fe fe-activity"></i> Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('log-viewer::logs.list') }}"
                                    class="nav-link{{ Route::is('log-viewer::logs.list') ? 'active' : '' }}">
-                                    <i class="fa fa-archive"></i> Logs
+                                    <i class="fe fe-archive"></i> Logs
                                 </a>
                             </li>
                         </ul>
@@ -29,7 +29,7 @@
 
         <div class="my-3 my-md-5">
             <a href="{{ request()->fullUrl() }}" class="pjax js-pjax--current-url"></a>
-            <div class="container">
+            <div class="{{ config('admin.fluid') ? 'container-fluid' : 'container' }}">
                 <ol class="breadcrumb mt-0">
                     <li class="breadcrumb-item {{ Route::is('log-viewer::dashboard') ? 'active' : '' }}">
                         @if(Route::is('log-viewer::dashboard'))

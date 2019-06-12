@@ -32,11 +32,11 @@ function handleImageInputChange() {
                         images = [images[0]];
                         $wrapper.find('.js-image').not('.js-image--clone').remove();
                     }
-                    $.each(images, function (i, path) {
+                    $.each(images, function (i, image) {
                         let $image = $clone.clone();
                         $image.find(':input').prop('disabled', false);
-                        $image.find('.js-image__path').val(path);
-                        $image.find('.js-image__img').attr('src', path);
+                        $image.find('.js-image__path').val(image.path);
+                        $image.find('.js-image__img').attr('src', image.src);
                         $image.insertBefore($clone);
                         $image.removeClass('js-image--clone');
                     });

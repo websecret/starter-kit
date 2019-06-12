@@ -64,6 +64,15 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'images' => [
+            'driver' => 's3',
+            'endpoint' => env('S3_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'key' => env('S3_KEY'),
+            'secret' => env('S3_SECRET'),
+            'region' => env('S3_REGION'),
+            'bucket' => env('S3_BUCKET'),
+        ],
     ],
 
 ];

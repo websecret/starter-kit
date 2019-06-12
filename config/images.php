@@ -1,9 +1,8 @@
 <?php
 
-$folder = 'uploads' . DIRECTORY_SEPARATOR . 'images';
-
 return [
-    'folder' => $folder,
-    'url' => env('IMAGES_URL', env('APP_URL') . DIRECTORY_SEPARATOR . $folder),
+    'url' => env('IMAGES_URL'),
+    'key' => env('IMAGES_KEY'),
+    'salt' => env('IMAGES_SALT'),
     'models_path' => 'Models',
 ];

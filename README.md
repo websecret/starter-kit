@@ -1,5 +1,6 @@
-# Установка
+# Установка backend
 
+### Common
 `composer install`
 
 `cp .env.example .env`
@@ -8,29 +9,40 @@
 
 `php artisan key:generate`
 
-`yarn`
+### Local
 
-`yarn run prod` - сборка проекта
+`php artisan migrate:fresh -seed` - миграции и сиды
 
-`php artisan migrate:refresh --seed` - это тестовые данные, выполнять только для локального окружения
+`php artisan db:seed --class=DatabaseFakeSeeder` - фейковые данные
 
+### Production
 
-## Логи
+`php artisan migrate` - миграции
 
-`/admin/logs`
+`php artisan db:seed` - сиды реальных данных
 
-## Сборка проекта
+# Установка frontend
 
-`yarn run prod` - продакшен версия
+### Local
 
-## Доступы
+`yarn && yarn dev` - сборка проекта
+
+### Production
+
+`yarn && yarn prod` - сборка проекта
+
+# URL's
+
+`/admin/logs` - Логи
+
+# Доступы
 
 `/admin` - url
 
-login: *info@alfavet.by*
+login: *info@gmail.com*
 
 password: *******
 
-## Команды
+# Команды
 
 * `php artisan `

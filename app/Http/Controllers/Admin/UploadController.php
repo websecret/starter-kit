@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use File;
+use App\Models\Image\Image;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UploadController extends Controller
 {
     public function images(Request $request)
     {
         $images = [];
-        $path = '/uploads/temp';
-        $folder = public_path($path);
-        if (!File::exists($folder)) File::makeDirectory($folder, 493, true);
         foreach ($request->file('images', []) as $image) {
-            do {
-                $filename = str_random() . '.' . $image->getClientOriginalExtension();
-            } while (File::exists($folder . '/' . $filename));
             try {
-                $image->move($folder, $filename);
-                $images[] = $path . '/' . $filename;
+                $image = Image::upload($image);
+                $images[] = [
+                    'path' => $image,
+                    'src' => Image::encryptUrl($image),
+                ];
             } catch (\Exception $e) {
                 return [
                     'result' => 'error',

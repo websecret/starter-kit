@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources;
 
-use App\Models\CustomAttributes\CustomAttributableInterface;
 use Illuminate\Http\Resources\Json\Resource as IlluminateResources;
 
 class Resource extends IlluminateResources
 {
+    protected $except = [
+
+    ];
+
     protected function addImages($data)
     {
         $resource = $this->resource;

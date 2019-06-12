@@ -2,8 +2,6 @@
 
 namespace App\Models\Image;
 
-use File;
-
 trait ImageableTrait
 {
     public function image()
@@ -11,140 +9,77 @@ trait ImageableTrait
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function images()
-    {
-        return $this->morphMany(Image::class, 'imageable');
-    }
-
-    public function imagesConfig()
-    {
-        return [];
-    }
-
-    public function getImagesUploadPath()
-    {
-        return kebab_case(class_basename($this->getModel()));
-    }
-
-    public function getImagesUploadFolder()
-    {
-        return public_path('uploads/images/' . $this->getImagesUploadPath());
-    }
-
-    public function getImagesSizes()
-    {
-        $config = $this->imagesConfig();
-        if (empty($config)) {
-            $config = [
-                'main' => [],
-            ];
-        }
-        $result = [];
-        foreach ($config as $type => $sizes) {
-            $adminSizes = $this->getAdminImagesTypeSizes($type);
-            $result[$type] = array_merge($sizes, $adminSizes);
-        }
-        return $result;
-    }
-
     public function getMainImageUrlsAttribute()
     {
-        return $this->buildImagesUrls(false, true);
-    }
-
-    public function getAdminMainImageUrlsAttribute()
-    {
-        return $this->buildImagesUrls(true, true);
+        return $this->buildImagesUrls(true, false, 1);
     }
 
     public function getImagesUrlsAttribute()
     {
-        return $this->buildImagesUrls(false);
+        return $this->buildImagesUrls(false, false, 1);
     }
 
-    public function getAdminImagesUrlsAttribute()
+    public function loadMainImageUrl($size, $type = 'main', $withAdmin = true, $dpr = 1)
     {
-        return $this->buildImagesUrls(true);
+        $sizes = $this->buildImagesUrls(true, $withAdmin, $dpr);
+
+        return array_get($sizes, $type . '.sizes.' . $size);
     }
 
-    protected function buildImagesUrls($admin = null, $onlyMain = false)
+    public function buildImagesUrls($onlyMain = false, $withAdmin = true, $dpr = 1)
     {
         $urls = [];
-        $sizes = $this->getImagesSizes();
+        $sizes = $this->getImagesSizes($withAdmin);
         foreach ($sizes as $type => $size) {
             $sizes[$type] = array_merge(['original' => []], $size);
         }
         foreach ($sizes as $type => $typeSizes) {
-            $adminSizes = $this->getAdminImagesTypeSizes($type);
             foreach ($typeSizes as $size => $params) {
-                if (($admin === true && !isset($adminSizes[$size])) || ($admin === false && isset($adminSizes[$size]))) {
-                    continue;
-                }
-                if ($onlyMain) {
-                    $urls[$type]['sizes'][$size] = null;
-                } else {
-                    $urls[$type] = [];
-                }
+                $urls[$type] = [];
             }
         }
         $typeKeys = [];
         foreach ($urls as $type => $size) {
             $typeKeys[$type] = 0;
         }
-        foreach ($this->images as $image) {
-            if ($onlyMain) {
-                $urls[$image->type] = array_merge($image->custom_attributes->toArray(), $urls[$image->type]);
-            } else {
-                $urls[$image->type][$typeKeys[$image->type]] = array_merge($image->custom_attributes->toArray(), array_get($urls[$image->type], $typeKeys[$image->type], []));
-            }
+        foreach ($this->images->sortByDesc('is_main') as $image) {
+            if (!isset($urls[$image->type]) || !isset($typeKeys[$image->type])) continue;
+            $urls[$image->type][$typeKeys[$image->type]] = array_merge($image->custom_attributes->toArray(), array_get($urls[$image->type], $typeKeys[$image->type], []));
             foreach (array_keys(array_get($sizes, $image->type, [])) as $size) {
-                if (($admin === true && !isset($adminSizes[$size])) || ($admin === false && isset($adminSizes[$size]))) {
-                    continue;
-                }
-                if ($onlyMain && !$image->is_main) {
-                    continue;
-                }
-                if ($onlyMain) {
-                    $urls[$image->type]['sizes'][$size] = $image->getUrl($size, $this);
-                } else {
-                    $urls[$image->type][$typeKeys[$image->type]]['sizes'][$size] = $image->getUrl($size, $this);
-                }
+                $urls[$image->type][$typeKeys[$image->type]]['sizes'][$size] = $image->getUrl($size, $this, $dpr);
             }
             $typeKeys[$image->type] = $typeKeys[$image->type] + 1;
         }
+        if ($onlyMain) {
+            $urls = array_map(function ($data) {
+                return array_get($data, 0, []);
+            }, $urls);
+        }
+
         return $urls;
     }
 
-
-    public function getAdminImagesSizes()
+    public function getImagesSizes($withAdmin = true)
     {
-        return null;
+        $config = $this->imagesConfig();
+        if (empty($config)) {
+            $config = [
+                'main' => [
+                    'sizes' => [],
+                ],
+            ];
+        }
+        $result = [];
+        foreach ($config as $type => $data) {
+            $adminSizes = $withAdmin ? $this->getAdminImagesTypeSizes($type) : [];
+            $result[$type] = array_merge($data['sizes'], $adminSizes);
+        }
+        return $result;
     }
 
-    protected function getDefaultAdminImagesSizes()
+    public function imagesConfig()
     {
-        return [
-            'admin-table' => [
-                'width' => 32,
-                'height' => 32,
-                'quality' => 70,
-                'crop' => true,
-                'upsize' => true,
-            ],
-            'admin-form' => [
-                'width' => 300,
-                'height' => 200,
-                'quality' => 90,
-                'crop' => true,
-                'upsize' => true,
-            ],
-        ];
-    }
-
-    public function loadMainImageUrl($size, $type = 'main')
-    {
-        $sizes = $this->buildImagesUrls(null, true);
-        return array_get($sizes, $type . '.sizes.' . $size);
+        return [];
     }
 
     protected function getAdminImagesTypeSizes($type)
@@ -156,21 +91,35 @@ trait ImageableTrait
         return $result;
     }
 
+    protected function getDefaultAdminImagesSizes()
+    {
+        return [
+            'admin-table' => [
+                'width' => 32,
+                'height' => 32,
+                'quality' => 70,
+            ],
+            'admin-form' => [
+                'width' => 300,
+                'height' => 200,
+                'quality' => 90,
+            ],
+        ];
+    }
+
+    public function getAdminImagesSizes()
+    {
+        return null;
+    }
+
     public function syncImages($data)
     {
-        $folder = $this->getImagesUploadFolder();
-        if (!File::exists($folder)) File::makeDirectory($folder, 493, true, true);
         foreach ($data as $type => $typeData) {
             $values = array_get($typeData, 'values', []);
             foreach ($values as $key => $value) {
                 $path = $value['path'];
                 if ($value['is_new']) {
-                    $ext = File::extension($path);
-                    do {
-                        $filename = str_random() . '.' . $ext;
-                    } while (File::exists($folder . '/' . $filename));
-                    File::copy(public_path($path), $folder . '/' . $filename);
-                    $path = $filename;
+                    $path = Image::upload($path, $this);
                 }
                 $values[$key]['path'] = $path;
             }
@@ -192,5 +141,20 @@ trait ImageableTrait
             $updated[] = $image->id;
         }
         $this->images()->ofType($type)->whereNotIn('id', $updated)->delete();
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function getImagesUploadPath()
+    {
+        return kebab_case(class_basename($this->getModel())) . '/' . str_random(2);
+    }
+
+    public function hasImagesOfType($type = 'main')
+    {
+        return !!$this->images()->where('type', $type)->count();
     }
 }

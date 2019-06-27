@@ -1,4 +1,4 @@
-const slugify = require('@sindresorhus/slugify');
+const slugify = require('slugify');
 
 function initSlug() {
     $('.js-input-slug__field').each(function () {

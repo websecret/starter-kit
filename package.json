@@ -20,7 +20,6 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.2",
-        "@sindresorhus/slugify": "^0.9.1",
         "axios": "^0.19",
         "bootbox": "^5.1",
         "bootstrap": "^4.3",
@@ -34,6 +33,7 @@
         "moment": "^2.24",
         "popper.js": "^1.15",
         "selectize": "^0.12",
+        "slugify": "^1.3.4",
         "tabler-ui": "^0.0.34",
         "tempusdominus-bootstrap-4": "^5.1.2",
         "toastr": "^2.1.4"

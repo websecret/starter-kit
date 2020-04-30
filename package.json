@@ -25,7 +25,7 @@
         "bootstrap": "^4.3",
         "bootstrap-datepicker": "^1.8.0",
         "froala-editor": "^2.8.1",
-        "jquery": "^3.4",
+        "jquery": "^3.5",
         "jquery-form": "^4.2.2",
         "jquery-pjax": "^2.0",
         "jquery-sortable": "^0.9",

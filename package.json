@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.2",
-        "axios": "^0.19",
+        "axios": "^0.21",
         "bootbox": "^5.1",
         "bootstrap": "^4.3",
         "bootstrap-datepicker": "^1.8.0",
